@@ -20,7 +20,7 @@ std::string getList(){
 
 void addList(std::string data){
     std::ofstream myfile;
-    myfile.open("list.txt");
+    myfile.open("list.txt", std::ios_base::app);
     data = data+"\n";
     myfile<<data;
     myfile.close();
