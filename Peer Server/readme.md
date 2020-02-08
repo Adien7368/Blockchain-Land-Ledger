@@ -1,2 +1,2 @@
-##Server request the query and return list of ip
-##Client send a request and recieve the list of ip 
+# peer is virtual environment of python
+## A server that will return the ip of blockchain member
