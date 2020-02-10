@@ -1,0 +1,53 @@
+Structure of My BlockChain
+
+
+Can someone write all the pages that was discussed?
+
+There is a server that will done many jobs for us
+
+	List offers for selling
+	Manage Data of User(ip + identity) Wallets
+	List of Owers for every land
+	LandID with coordinates
+
+
+
+BlockChain
+	currentBlock: - a temporary block that will be added after any transaction
+	Ledger of logs - list of Block
+	(All Lands ID , Lands current Owers) - list
+	OwnerID - interger
+	ownerDetails - Hashmap of owner details
+	NodesIP - list of IP
+	LandDetails - HashMap
+	Transaction - list of accepted list
+
+	getIP()
+	checkLedger - bool /// it will involve many things
+	createBock(landID, transactions) - Block
+	requestBuy(Block) - send a request(Block) to server to get accepted by Seller
+	sellResponseHandle(signedBlock) - handle a accept responce of requestBuy
+	mine(Block) - pow
+
+	Buy(landID) - function to buy a land(send a request(offer) to server)
+	Sell(landID) - sell a landID(send a request to server to collect all offers)
+	acceptOffer(offerID) - accept a offer for selling the land(sign the Block and send back
+		To buyer party and clear all other offers from server)
+
+
+
+Block:
+	Id:
+	Timestamp:
+	Transactions: []
+	Nounce:
+Previous Hash:
+
+Transaction:
+	Price -
+	landID -
+	buyerID -
+	Documents -
+	Sellers -
+		documments
+		digitalSign
