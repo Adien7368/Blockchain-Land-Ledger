@@ -49,5 +49,5 @@ Transaction:
 	buyerID -
 	Documents -
 	Sellers -
-		documments
-		digitalSign
+	documments
+	digitalSign
