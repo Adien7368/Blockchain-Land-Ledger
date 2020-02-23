@@ -14,14 +14,6 @@ $database= new Database();
 $db = $database->connect();
 if($db){
 	echo "string";
-	$query='INSERT INTO posts
-            SET
-            title= "njsjfnj"
-            ';
-
-            $stmt=$this->conn->prepare($query);
-
-            $stmt->execute();
 }
 else
 {
