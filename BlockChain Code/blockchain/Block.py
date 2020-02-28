@@ -1,6 +1,7 @@
 from hashlib import sha256
 import json
 import random
+from blockchain import Transaction
 LIMIT = 100000000
 
 class Block:
@@ -32,3 +33,7 @@ class Block:
             if not transaction.verify():
                 return False
         return True 
+
+    def insert(self, transac):
+        self.transactions.append(transac)
+        
