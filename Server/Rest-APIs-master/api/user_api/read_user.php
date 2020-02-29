@@ -10,13 +10,6 @@ $database= new Database();
 
 $db = $database->connect();
 
-
-    private $host ='localhost:3306';
-    private $db_name='ledger';
-    private $username = 'sammy';
-    private $password='1@9!9458';
-
-
 $post= new post($db);
 $post->user_name=isset($_GET['user_name'])? $_GET['user_name'] : die();
 $result = $post->read_user();
