@@ -26,16 +26,13 @@ if($num>0){
 
             'id'=>$id,
             'name'=>$name,
+            'username'=>$user_name,
             'address'=>$address,
             'dob'=>$dob,
             'dig_sign'=>$dig_sign,
-            'no_of_lands'=>$no_of_lands,
-            'land_ids'=>$land_ids,
             'phone'=>$phone,
             'email'=>$email,
-            'wallet_id'=>$wallet_id,
-            'id_no'=>$id_no
-
+            'wallet_id'=>$wallet_id
         );
         array_push($posts_arr['data'],$post_item);
     }

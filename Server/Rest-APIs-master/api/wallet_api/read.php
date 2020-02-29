@@ -34,7 +34,7 @@ if($num>0){
         array_push($posts_arr['data'],$post_item);
     }
 
-    echo json_encode($posts_arr);
+    echo json_encode($posts_arr['data']);
 }
 
 else{

@@ -14,14 +14,12 @@ $post= new post($db);
 $post->id=isset($_GET['id'])? $_GET['id'] : die();
 $result = $post->read_single();
 $num=$result->rowCount();
-echo "hhj";
 if($num>0){
-    $posts_arr=array();
-    $posts_arr['data']=array();
+    //$posts_arr=array();
+    //$posts_arr['data']=array();
 
-    while ($row=$result->fetch(PDO::FETCH_ASSOC)){
+    if($row=$result->fetch(PDO::FETCH_ASSOC)){
         extract($row);
-        echo "string";
         $post_item= array(
 
             'id'=>$id,
@@ -29,20 +27,18 @@ if($num>0){
             'address'=>$address,
             'dob'=>$dob,
             'dig_sign'=>$dig_sign,
-            'no_of_lands'=>$no_of_lands,
-            'land_ids'=>$land_ids,
             'phone'=>$phone,
             'email'=>$email,
             'wallet_id'=>$wallet_id,
-            'id_no'=>$id_no
+            'user_name'=>$user_name,
+            'message'=>'success'
 
         );
-        array_push($posts_arr['data'],$post_item);
-    }
-
-    echo json_encode($posts_arr);
+        //array_push($posts_arr['data'],$post_item);
+   	echo json_encode($post_item); 
+   }
+    //echo json_encode($posts_arr);
 }
-
 else{
     echo json_encode(
         array('message'=>'No Post found')

@@ -26,18 +26,16 @@ if($num>0){
 
 
             'land_id'=>$land_id,
-            'owner_id'=>$owner_id,
+            'inspector_id'=>$inspector_id,
             'address'=>$address,
             'documents'=>$documents,
             'coordinates'=>$coordinates,
-            'availability'=>$availability,
-            'inspector'=>$inspector
-
+            'area'=>$area
         );
         array_push($posts_arr['data'],$post_item);
     }
 
-    echo json_encode($posts_arr);
+    echo json_encode($posts_arr['data']);
 }
 
 else{

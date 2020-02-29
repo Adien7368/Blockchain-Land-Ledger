@@ -18,7 +18,7 @@ if($num>0){
     $posts_arr=array();
     $posts_arr['data']=array();
 
-    while ($row=$result->fetch(PDO::FETCH_ASSOC)){
+    if ($row=$result->fetch(PDO::FETCH_ASSOC)){
         extract($row);
         $post_item= array(
 
@@ -29,10 +29,11 @@ if($num>0){
             'transactions'=>$transactions
 
         );
-        array_push($posts_arr['data'],$post_item);
+	echo json_encode($post_item);
+        //array_push($posts_arr['data'],$post_item);
     }
 
-    echo json_encode($posts_arr);
+    //echo json_encode($posts_arr);
 }
 
 else{

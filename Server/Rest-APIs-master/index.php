@@ -2,7 +2,6 @@
 
 header('Access-Control-Allow-Origin: *');
 header('Control-Type: application/json ');
-echo "hi";
 
 include_once 'config/Database.php';
 
@@ -12,16 +11,9 @@ $database= new Database();
  
 
 $db = $database->connect();
+
 if($db){
-	echo "string";
-	$query='INSERT INTO posts
-            SET
-            title= "njsjfnj"
-            ';
-
-            $stmt=$this->conn->prepare($query);
-
-            $stmt->execute();
+	echo "strg";
 }
 else
 {

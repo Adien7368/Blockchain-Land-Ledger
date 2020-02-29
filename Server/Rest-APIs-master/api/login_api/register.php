@@ -16,12 +16,12 @@ $post= new post($db);
 
 $data=json_decode(file_get_contents("php://input"));
 
-// $post->name=$data->name;
-// $post->email=$data->email;
-// $post->id_no=$data->id_no;
-// $post->address=$data->address;
-// // $post->dob=$data->dob;
-// $post->phone=$data->phone;
+$post->name=$data->name;
+$post->email=$data->email;
+$post->id_no=$data->id_no;
+$post->address=$data->address;
+// $post->dob=$data->dob;
+$post->phone=$data->phone;
 $post->user_name=$data->user_name;
 $post->user_pass=$data->user_pass;
 
