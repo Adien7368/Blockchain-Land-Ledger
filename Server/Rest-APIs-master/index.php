@@ -11,9 +11,14 @@ $database= new Database();
  
 
 $db = $database->connect();
+<<<<<<< HEAD
 
 if($db){
 	echo "strg";
+=======
+if($db){
+	echo "string";
+>>>>>>> 3384ade34f35df9f8b1aabaa17aa050f0b93f855
 }
 else
 {
