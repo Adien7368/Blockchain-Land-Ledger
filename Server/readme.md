@@ -8,6 +8,10 @@ API Documentation
 http://13.127.187.57/project/Blockchain-Land-Ledger/Server/Rest-APIs-master/api/user_api/read.php
 #returns all user details of all users 
 
+
+http://13.127.187.57/project/Blockchain-Land-Ledger/Server/Rest-APIs-master/api/user_api/read_user.php?user_name=?
+#returns all user details of selected user, put user_name in place of ?
+
 http://13.127.187.57/project/Blockchain-Land-Ledger/Server/Rest-APIs-master/api/user_api/read_single.php?id=?
 #returns all user details of selected user, put id in place of ?
 
