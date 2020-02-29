@@ -6,6 +6,7 @@
 
         public $id;
         public $name;
+        public $user_name;
         public $address;
         public $dob;
         public $no_of_lands;
@@ -32,6 +33,14 @@
             $query='SELECT * FROM user where id=:id limit 1';
             $stmt=$this->conn->prepare($query);
             $stmt->bindParam('id', $this->id);
+            $stmt->execute();
+            return $stmt;   
+        }
+
+        public function read_user() {
+            $query='SELECT * FROM user where user_name=:user_name limit 1';
+            $stmt=$this->conn->prepare($query);
+            $stmt->bindParam('user_name', $this->user_name);
             $stmt->execute();
             return $stmt;   
         }
