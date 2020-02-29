@@ -2,9 +2,14 @@ astroid==2.3.3
 certifi==2019.11.28
 cffi==1.14.0
 chardet==3.0.4
+Click==7.0
+Flask==1.1.1
 idna==2.8
 isort==4.3.21
+itsdangerous==1.1.0
+Jinja2==2.11.1
 lazy-object-proxy==1.4.3
+MarkupSafe==1.1.1
 mccabe==0.6.1
 pip==9.0.1
 pycparser==2.19
@@ -15,4 +20,5 @@ setuptools==39.0.1
 six==1.14.0
 typed-ast==1.4.1
 urllib3==1.25.8
+Werkzeug==1.0.0
 wrapt==1.11.2
