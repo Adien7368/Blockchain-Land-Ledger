@@ -40,10 +40,18 @@ example- {"user_name"="paw","user_pass"="123"}
 
 it will return 'successs' if user_name and user_pass are correct, 'user doesn't exist' if user not exists, and 'failed' otherwise
 
+[POST][id = int, user_name = string, name = string, email = string, wallet_id = int, phone = int, address = string, dob = date, dig_sign = string] http://13.127.187.57/project/Blockchain-Land-Ledger/Server/Rest-APIs-master/api/user_api/create.php
 
 ##register
 
 
+## ip 
+Read all peer ip
+[GET] http://13.127.187.57/project/Blockchain-Land-Ledger/Server/Rest-APIs-master/api/ip_api/login.php
 
+Register a peer
+[POST][id = int,address = string] http://13.127.187.57/project/Blockchain-Land-Ledger/Server/Rest-APIs-master/api/ip_api/create.php
 
+delete a peer
+[GET][id = int] http://13.127.187.57/project/Blockchain-Land-Ledger/Server/Rest-APIs-master/api/ip_api/delete.php
 
