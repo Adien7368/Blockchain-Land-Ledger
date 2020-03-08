@@ -2,11 +2,13 @@ import time
 import requests
 from blockchain import Block
 from blockchain import User
+import config.utils as cfg
+import time
 
 class BlockChain:
     def __init__(self):
         self.currentBlock = Block.Block(-1,[],-1,-1)
-        self.ledger = [] # type: List[Block.Block]
+        self.ledger = [Block.Block(0,[],0,0)] # type: List[Block.Block]
         self.ownerDetails = User.User()
         self.nodesIP = []
         self.landDetails = {}
@@ -18,23 +20,20 @@ class BlockChain:
     # def upadatePeers(self, peers):
     #     self.nodesIP = peers
     
-    def login(self, user, passw, flogin, fuserinfo, flandinfo):
-        if(flogin(user, passw)):
-            data = fuserinfo(1)
-            print("BlockChain: ")
-            print(data)
+    def login(self, user, passw):
+        if(cfg.userlogin(user, passw)):
+            data = cfg.userinfo(1)
             if('message' in data and data['message']=='success'):
                 check = self.ownerDetails.logintry(data)
                 if check:
-                    self.landDetails = flandinfo(self.ownerDetails.userID)
+                    self.landDetails = cfg.landinfo(self.ownerDetails.userID)    
+                    cfg.ipRegis(self.ownerDetails.userID, cfg.getIP())
+                    cfg.ipRead()
                     return True
-                return False
-            else:
-                return False
-        else:
-            return False
+        return False
     
     def logout(self):
+        cfg.ipDelete(self.ownerDetails.userID)
         self.ownerDetails.logout()
         return 'done'
 

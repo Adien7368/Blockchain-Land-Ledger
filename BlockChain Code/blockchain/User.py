@@ -27,7 +27,6 @@ class User:
         self.mobile = data['phone']
         self.email = data['email']
         self.address = data['address']
-        self.walletID = data['wallet_id']
 
     def logintry(self, data):
         try:

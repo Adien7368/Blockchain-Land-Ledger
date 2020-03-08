@@ -28,6 +28,7 @@ class Block:
             if self.compute_hash()< sha256(str(LIMIT).encode()).hexdigest():
                 return True
         return False
+    
     def verify(self):
         for transaction in self.transactions:
             if not transaction.verify():
