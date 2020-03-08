@@ -10,6 +10,7 @@
         public $id_no;
         public $address;
         public $phone;
+        public $dig_sign;
         public $user_id;
         public $user_name;
         public $user_pass;
@@ -52,12 +53,9 @@
             SET
             name= :name,
             email= :email,
-            id_no= :id_no,
             address= :address,
             phone= :phone,
             wallet_id=22,
-            no_of_lands=77,
-            land_ids="tdrfyguhij",
             dig_sign="null",
             dob="null",
             user_name= :user_name
@@ -73,7 +71,7 @@
             $stmt=$this->conn->prepare($query);
             $stmt->bindParam(':name', $this->name);
             $stmt->bindParam(':email', $this->email);
-            $stmt->bindParam(':id_no', $this->id_no);
+            // $stmt->bindParam(':id_no', $this->id_no);
             $stmt->bindParam(':address', $this->address);
             $stmt->bindParam(':phone', $this->phone);
             $stmt->bindParam(':user_name', $this->user_name);

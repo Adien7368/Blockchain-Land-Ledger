@@ -9,8 +9,6 @@ class Database {
     private $password='1@9!9458';
     private $conn;
 
-     
-
     //DB connect
     public function connect(){
         $this->conn=null;

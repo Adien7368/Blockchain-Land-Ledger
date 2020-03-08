@@ -18,7 +18,7 @@ $data=json_decode(file_get_contents("php://input"));
 
 $post->name=$data->name;
 $post->email=$data->email;
-$post->id_no=$data->id_no;
+// $post->id_no=$data->id_no;
 $post->address=$data->address;
 
 $post->phone=$data->phone;
