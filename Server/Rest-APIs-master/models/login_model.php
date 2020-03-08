@@ -46,56 +46,37 @@
             $stm->bindParam('user_name', $this->user_name);
             $stmt->execute();
             $stm->execute();
-            
             if($stmt->rowCount()>0 || $stm->rowCount()>0)return 0;
             
-            $query='INSERT INTO user
-            SET
-            name= :name,
-            email= :email,
-            address= :address,
-            phone= :phone,
-            wallet_id=22,
-            dig_sign="null",
-            dob="null",
-            user_name= :user_name
-            ';
+	    $query='INSERT INTO user SET name=:name, email=:email, address=:address, phone=:phone,
+            wallet_id=:wallet_id, dig_sign=:dig_sign, dob=:dob, user_name=:user_name';
 
-            $query1='INSERT INTO login
-            SET
-            user_id=:user_id,
-            user_name= :user_name,
-            user_pass= :user_pass
-            ';
+            $query1='INSERT INTO login SET user_id=:user_id, user_name=:user_name,user_pass=:user_pass';
 
             $stmt=$this->conn->prepare($query);
             $stmt->bindParam(':name', $this->name);
             $stmt->bindParam(':email', $this->email);
-            // $stmt->bindParam(':id_no', $this->id_no);
             $stmt->bindParam(':address', $this->address);
             $stmt->bindParam(':phone', $this->phone);
             $stmt->bindParam(':user_name', $this->user_name);
-
+	    $stmt->bindParam(':wallet_id', $this->wallet_id);
+	    $stmt->bindParam(':dig_sign', $this->dig_sign);
+	    $stmt->bindParam(':dob', $this->dob);
             $stmt->execute();
-            // echo $stmt->rowCount()."   ";
-
 
             $que='SELECT * FROM user where user_name=:user_name';
             $st=$this->conn->prepare($que);
             $st->bindParam(':user_name', $this->user_name);
             $st->execute();
             $result = $st->fetch(PDO::FETCH_ASSOC);
-            // extract($result);
-            // echo $result['id'];
-            $this->u_id=$result['id'];
+            $this->u_id=(int)$result['id'];
 
-            $stmt1=$this->conn->prepare($query1);
+	    $stmt1=$this->conn->prepare($query1);
             $stmt1->bindParam(':user_id', $this->u_id);
             $stmt1->bindParam(':user_name', $this->user_name);
             $stmt1->bindParam(':user_pass', $this->user_pass);
-            
             if($stmt1->execute()){
-                return 1;
+		 return 1;
             }
             else {
                 return 0;

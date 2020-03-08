@@ -5,44 +5,39 @@ API Documentation
 
 
 ##User
-http://13.127.187.57/project/Blockchain-Land-Ledger/Server/Rest-APIs-master/api/user_api/read.php
-#returns all user details of all users 
+Return all details of users
+[GET][nothing] http://13.127.187.57/project/Blockchain-Land-Ledger/Server/Rest-APIs-master/api/user_api/read.php
 
+Return details of user whose user name is user_name
+[GET][nothing] http://13.127.187.57/project/Blockchain-Land-Ledger/Server/Rest-APIs-master/api/user_api/read_user.php?user_name=?
 
-http://13.127.187.57/project/Blockchain-Land-Ledger/Server/Rest-APIs-master/api/user_api/read_user.php?user_name=?
-#returns all user details of selected user, put user_name in place of ?
+Return details of user with user id = :id
+[GET][nothing] http://13.127.187.57/project/Blockchain-Land-Ledger/Server/Rest-APIs-master/api/user_api/read_single.php?id=?
 
-http://13.127.187.57/project/Blockchain-Land-Ledger/Server/Rest-APIs-master/api/user_api/read_single.php?id=?
-#returns all user details of selected user, put id in place of ?
-
+##Register User
+register a user in login and user table
+[POST][user_name = string, user_pass = string, name = string, email = string, wallet_id = int, phone = int, address = string, dob = string, dig_sign = string]
+http://13.127.187.57/project/Blockchain-Land-Ledger/Server/Rest-APIs-master/api/login_api/register.php
 
 ##land
-http://13.127.187.57/project/Blockchain-Land-Ledger/Server/Rest-APIs-master/api/land_api/read.php
-#returns all land details of all lands 
+Return details of all lands 
+[GET][nothing] http://13.127.187.57/project/Blockchain-Land-Ledger/Server/Rest-APIs-master/api/land_api/read.php
 
-http://13.127.187.57/project/Blockchain-Land-Ledger/Server/Rest-APIs-master/api/land_api/read_single.php?land_id=?
-#returns all land details of selected land, put id in place of ?
+Return a land details havinga given landID
+[GET][nothing] http://13.127.187.57/project/Blockchain-Land-Ledger/Server/Rest-APIs-master/api/land_api/read_single.php?land_id=?
 
 
 ##wallet
-http://13.127.187.57/project/Blockchain-Land-Ledger/Server/Rest-APIs-master/api/wallet_api/read.php
-#returns all wallet details of all wallets 
+Return all details of wallets
+[GET][nothing] http://13.127.187.57/project/Blockchain-Land-Ledger/Server/Rest-APIs-master/api/wallet_api/read.php
 
-http://13.127.187.57/project/Blockchain-Land-Ledger/Server/Rest-APIs-master/api/wallet_api/read_single.php?wallet_id=?
-#returns all wallet details of selected wallet, put id in place of ?
-
+Return all wallet details with a walletID
+[GET][nothing] http://13.127.187.57/project/Blockchain-Land-Ledger/Server/Rest-APIs-master/api/wallet_api/read_single.php?wallet_id=?
 
 
 ##login
-http://13.127.187.57/project/Blockchain-Land-Ledger/Server/Rest-APIs-master/api/login_api/login.php
-send user_name and user_pass in json format, use post method
-example- {"user_name"="paw","user_pass"="123"}
-
-it will return 'successs' if user_name and user_pass are correct, 'user doesn't exist' if user not exists, and 'failed' otherwise
-
-[POST][id = int, user_name = string, name = string, email = string, wallet_id = int, phone = int, address = string, dob = date, dig_sign = string] http://13.127.187.57/project/Blockchain-Land-Ledger/Server/Rest-APIs-master/api/user_api/create.php
-
-##register
+login meathod 
+[POST][user_name = string, user_pass = string]http://13.127.187.57/project/Blockchain-Land-Ledger/Server/Rest-APIs-master/api/login_api/login.php
 
 
 ## ip 
