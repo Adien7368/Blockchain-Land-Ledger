@@ -63,6 +63,16 @@ def logout():
     return redirect(url_for("login"))
 
 
+@app.route('/imhere', methods=['POST'])
+def pingIP():
+    try:
+        obj = json.loads(request.get_data())
+        blockC.addIP(obj['id'],obj['address'])
+        return "Hello : "+obj['id']
+    except:
+        return "Wrong IP format"
+
+
 @app.route('/register/user', methods=['GET'])
 def registerUserUI():
     return render_template(cfg.PAGES['regisUser'])

@@ -4,6 +4,7 @@ from blockchain import Block
 from blockchain import User
 import config.utils as cfg
 import time
+import json
 
 class BlockChain:
     def __init__(self):
@@ -14,6 +15,9 @@ class BlockChain:
         self.landDetails = {}
         self.transactionIndex = {}
         self.transPool=[]
+
+    def addIP(self, id, address):
+        self.nodesIP.append((id, address))
 
     def islogin(self):
         return self.ownerDetails.login
@@ -37,7 +41,7 @@ class BlockChain:
                 if check:
                     self.landDetails = cfg.landinfo(self.ownerDetails.userID)    
                     cfg.ipRegis(self.ownerDetails.userID, cfg.getIP())
-                    self.nodesIP = cfg.ipRead()
+                    self.nodesIP = json.loads(cfg.ipRead())
                     return True
         return False
     
