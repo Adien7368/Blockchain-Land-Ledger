@@ -12,11 +12,20 @@ class BlockChain:
         self.ownerDetails = User.User()
         self.nodesIP = []
         self.landDetails = {}
-        self.pendingTransLog = []
+        self.transactionIndex = {}
+        self.transPool=[]
 
     def islogin(self):
         return self.ownerDetails.login
 
+    def insertTransaction(self, obj):
+        self.transPool.append(obj)
+        
+    def distribute(self, obj):
+        for peer in self.nodesIP:
+            res = requests.post(peer['address']+":"+cfg.PORT+"/register/new", json=obj)
+            print("Sending trans.. "+peer['address']+":"+str(res))
+    
     # def upadatePeers(self, peers):
     #     self.nodesIP = peers
     
@@ -28,7 +37,7 @@ class BlockChain:
                 if check:
                     self.landDetails = cfg.landinfo(self.ownerDetails.userID)    
                     cfg.ipRegis(self.ownerDetails.userID, cfg.getIP())
-                    cfg.ipRead()
+                    self.nodesIP = cfg.ipRead()
                     return True
         return False
     
@@ -42,10 +51,8 @@ class BlockChain:
         self.currentBlock = Block.Block(-1,[],-1,-1)
         self.nodesIP = []
         self.landDetails = []
-    # def init():
 
     def checkLedger(self, data):
-        
         if(self.ownerDetails.verify(data)):
             hash_pre = 0
             for block in self.ledger:

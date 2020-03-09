@@ -2,6 +2,7 @@
 import requests
 import json
 import socket
+import blockchain.Transaction
 
 PORT = 5000
 
@@ -14,7 +15,7 @@ URLS = {
     'userID' : 'http://13.127.187.57/project/Blockchain-Land-Ledger/Server/Rest-APIs-master/api/user_api/read_single.php?id=',
     'user' : 'http://13.127.187.57/project/Blockchain-Land-Ledger/Server/Rest-APIs-master/api/user_api/read.php',
     'userName':'http://13.127.187.57/project/Blockchain-Land-Ledger/Server/Rest-APIs-master/api/user_api/read_user.php?user_name=',
-    'userCreate': 'http://13.127.187.57/project/Blockchain-Land-Ledger/Server/Rest-APIs-master/api/user_api/create.php',
+    'userCreate': 'http://13.127.187.57/project/Blockchain-Land-Ledger/Server/Rest-APIs-master/api/login_api/register.php',
     'ipRead':'http://13.127.187.57/project/Blockchain-Land-Ledger/Server/Rest-APIs-master/api/ip_api/login.php',
     'ipRegis':'http://13.127.187.57/project/Blockchain-Land-Ledger/Server/Rest-APIs-master/api/ip_api/create.php',
     'ipDelete':'http://13.127.187.57/project/Blockchain-Land-Ledger/Server/Rest-APIs-master/api/ip_api/delete.php'
@@ -22,7 +23,8 @@ URLS = {
 
 
 PAGES = {
-    'login':'login.html'
+    'login':'login.html',
+    'regisUser':'registerUser.html'
 }
 
 
@@ -100,3 +102,6 @@ def getIP():
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     s.connect(("8.8.8.8", 80))
     return s.getsockname()[0] 
+
+def parseTransaction(obj):
+    return blockchain.Transaction.Transaction(obj['index'],obj['price'],obj['landID'],obj['sellerID'],obj['buyerID'],obj['inspectID'],obj['sellSign'],obj['buySign'],obj['inspectSign'],obj['documents'])
