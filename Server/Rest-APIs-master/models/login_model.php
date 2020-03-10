@@ -3,11 +3,14 @@
         private $conn;
         private $table='login';
 
+        public $id;
+        public $u_id;
         public $name;
         public $email;
         public $id_no;
         public $address;
         public $phone;
+        public $dig_sign;
         public $user_id;
         public $user_name;
         public $user_pass;
@@ -20,7 +23,7 @@
         public function validate() {
             $query='SELECT * FROM login where user_name=:user_name';
             $stmt=$this->conn->prepare($query);
-             $stmt->bindParam('user_name', $this->user_name);
+            $stmt->bindParam('user_name', $this->user_name);
             $stmt->execute();
 
             if($stmt->rowCount()<=0)return 0;
@@ -36,60 +39,51 @@
 
         public function register() {
             $query='SELECT * FROM login where user_name=:user_name';
+            $quer='SELECT * FROM user where user_name=:user_name';
             $stmt=$this->conn->prepare($query);
-             $stmt->bindParam('user_name', $this->user_name);
+            $stm=$this->conn->prepare($quer);
+            $stmt->bindParam('user_name', $this->user_name);
+            $stm->bindParam('user_name', $this->user_name);
             $stmt->execute();
-
-            if($stmt->rowCount()>0)return 0;
-
+            $stm->execute();
+            if($stmt->rowCount()>0 || $stm->rowCount()>0)return 0;
             
-            $query='INSERT INTO user
-            SET
-            name=> :name,
-            email=> :email,
-            id_no=> :id_no,
-            address=> :address,
-            phone=> :phone,
-            wallet_id=null,
-            no_of_lands=null,
-            land_ids=null,
-            dig_sign=null,
-            dob=null,
-            user_name= :user_name
-            ';
+	    $query='INSERT INTO user SET name=:name, email=:email, address=:address, phone=:phone,
+            wallet_id=:wallet_id, dig_sign=:dig_sign, dob=:dob, user_name=:user_name';
 
-            $query1='INSERT INTO login
-            SET
-            user_name= :user_name,
-            user_pass= :user_pass
-            ';
-
+            $query1='INSERT INTO login SET user_id=:user_id, user_name=:user_name,user_pass=:user_pass';
 
             $stmt=$this->conn->prepare($query);
-            $stmt1=$this->conn->prepare($query1);
-
-            // $this->title=htmlspecialchars(strip_tags($this->user_pass));
-            // $this->body=htmlspecialchars(strip_tags($this->user_name));
             $stmt->bindParam(':name', $this->name);
             $stmt->bindParam(':email', $this->email);
-            $stmt->bindParam(':id_no', $this->id_no);
             $stmt->bindParam(':address', $this->address);
-            // $stmt->bindParam(':dob', null);
             $stmt->bindParam(':phone', $this->phone);
             $stmt->bindParam(':user_name', $this->user_name);
-            $stmt->bindParam(':user_pass', $this->user_pass);
+	    $stmt->bindParam(':wallet_id', $this->wallet_id);
+	    $stmt->bindParam(':dig_sign', $this->dig_sign);
+	    $stmt->bindParam(':dob', $this->dob);
+            $stmt->execute();
 
+            $que='SELECT * FROM user where user_name=:user_name';
+            $st=$this->conn->prepare($que);
+            $st->bindParam(':user_name', $this->user_name);
+            $st->execute();
+            $result = $st->fetch(PDO::FETCH_ASSOC);
+            $this->u_id=(int)$result['id'];
+
+	    $stmt1=$this->conn->prepare($query1);
+            $stmt1->bindParam(':user_id', $this->u_id);
             $stmt1->bindParam(':user_name', $this->user_name);
             $stmt1->bindParam(':user_pass', $this->user_pass);
-
             if($stmt1->execute()){
-                return 1;
+		 return 1;
             }
-            else return 0;
-
+            else {
+                return 0;
+            }
         }
 
-    }
+}
 
 
 

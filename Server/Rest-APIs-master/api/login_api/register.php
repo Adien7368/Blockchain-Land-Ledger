@@ -16,23 +16,21 @@ $post= new post($db);
 
 $data=json_decode(file_get_contents("php://input"));
 
+
 $post->name=$data->name;
 $post->email=$data->email;
-$post->id_no=$data->id_no;
+// $post->id_no=$data->id_no;
 $post->address=$data->address;
-// $post->dob=$data->dob;
+$post->wallet_id=$data->wallet_id;
+$post->dig_sign=$data->dig_sign;
+$post->dob=$data->dob;
 $post->phone=$data->phone;
 $post->user_name=$data->user_name;
 $post->user_pass=$data->user_pass;
 
 $result = $post->register();
-	
-	if($result==0){
-	    echo json_encode(
-	        array('message'=>'user already exist')
-	    );
-	}
-	else{    echo json_encode(
-	        array('message'=>'success')
-	    );
-	}
+if($result==0){
+	echo json_encode(array('message'=>'user already exist'));
+}else{
+	echo json_encode(array('message'=>'success'));
+}
