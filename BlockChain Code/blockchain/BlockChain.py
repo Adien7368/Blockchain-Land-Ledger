@@ -8,13 +8,13 @@ import json
 
 class BlockChain:
     def __init__(self):
-        self.currentBlock = Block.Block(-1,[],-1,-1)
+        self.port = 5000
         self.ledger = [Block.Block(0,[],0,0)] # type: List[Block.Block]
         self.ownerDetails = User.User()
         self.nodesIP = []
         self.landDetails = {}
-        self.transactionIndex = {}
-        self.transPool=[]
+        self.transactionIndex = {} # store all transactions on the blockChain
+        self.transPool={}    # approved checked block waiting to be mined
 
     def addIP(self, id, address):
         self.nodesIP.append((id, address))
@@ -23,25 +23,30 @@ class BlockChain:
         return self.ownerDetails.login
 
     def insertTransaction(self, obj):
-        self.transPool.append(obj)
+        self.transPool[obj.index] = obj
         
-    def distribute(self, obj):
+    def distribute(self, obj, path):
         for peer in self.nodesIP:
-            res = requests.post(peer['address']+":"+cfg.PORT+"/register/new", json=obj)
+            res = requests.post(peer['address']+path, json=obj)
             print("Sending trans.. "+peer['address']+":"+str(res))
     
     # def upadatePeers(self, peers):
     #     self.nodesIP = peers
     
     def login(self, user, passw):
+        print(self.port)
         if(cfg.userlogin(user, passw)):
-            data = cfg.userinfo(1)
+            data = cfg.usernameinfo(user)
             if('message' in data and data['message']=='success'):
                 check = self.ownerDetails.logintry(data)
                 if check:
                     self.landDetails = cfg.landinfo(self.ownerDetails.userID)    
-                    cfg.ipRegis(self.ownerDetails.userID, cfg.getIP())
-                    self.nodesIP = json.loads(cfg.ipRead())
+                    cfg.ipRegis(self.ownerDetails.userID, str(cfg.getIP())+":"+str(self.port))
+                    self.nodesIP = cfg.ipRead()
+                    print ("NodeIP: ")
+                    print(self.nodesIP)
+                    data = {'id':self.ownerDetails.userID,'address':cfg.getIP()+":"+str(self.port)}
+                    #self.distribute(data, '/imhere')
                     return True
         return False
     
@@ -75,10 +80,18 @@ class BlockChain:
     #     return 
 
     def mine(self):
-        if self.currentBlock.verify():
-            while not self.currentBlock.mine():
-                return True
-        return False
+        if(len(self.transPool)==0):
+            return False
+        blo = Block.Block(len(self.ledger), self.transPool, time.time(), self.ledger[-1].compute_hash())
+        if (not blo.mine()):
+            return False
+        for tran in self.transPool:
+            self.transactionIndex[tran] = self.transPool[tran]
+        self.transPool = {}
+        self.ledger.append(blo)
+        data = {'userID':self.ownerDetails.userID, 'ledger':self.ledger}
+        self.distribute(data, '/register/blockchain')
+        return True
 
     # def getOfferList(self, landID):
     #     URL = "http://localhost:3030/offers"

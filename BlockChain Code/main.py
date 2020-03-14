@@ -5,14 +5,21 @@ import config.utils as cfg
 import json
 import nacl.signing
 import nacl.encoding
+import argparse
 
+parser = argparse.ArgumentParser()
+parser.add_argument('-p', help='port number')
+args = parser.parse_args()
+port = 5000
+
+if(args.p):
+    port = args.p
+# setting the template directory to /Pages
 app = Flask(__name__, template_folder='Pages')
 
+# creating global blockchain 
 blockC = BlockChain.BlockChain()
-
-
-
-
+blockC.port = port
 @app.route('/login', methods = ['GET'])
 def login():
     if(blockC.islogin()):
@@ -62,7 +69,7 @@ def logout():
     print("logout : " + str(blockC.logout()))
     return redirect(url_for("login"))
 
-
+# not 
 @app.route('/imhere', methods=['POST'])
 def pingIP():
     try:
@@ -111,17 +118,49 @@ def regTransaction():
             raise "Transaction Already Reached"
         if(tran.verify()):
             blockC.insertTransaction(tran)
-            blockC.distribute(obj)
+            blockC.distribute(obj,'/register/transaction')
             return "Thanks for sharing"
         else:
             raise "Transaction is wrong"
     except:
         return 'Bye'
 
+@app.route('/register/blockchain', methods=['POST'])
+def regBlockChain():
+    obj = json.loads(request.get_data())
+    try:
+        userID, leg = cfg.parseLedger(obj)
+    except:
+        return 'Error'
+    
+    if(len(blockC.ledger)<len(leg)):
+        blockC.ledger = leg
+        tempTransIndex = {}
+        for block in leg:
+            for trans in block.transactions:
+                tempTransIndex[trans.index] = trans
+                if (not (trans.index in blockC.transactionIndex)):
+                    blockC.transactionIndex[trans.index] = trans
+                if (trans.index in blockC.transPool):
+                    blockC.transPool.pop(trans.index)
+                
+    else:
+        try:
+            addr = cfg.ipUser(userID)
+            data = {'userID':userID, 'ledger':blockC.ledger}
+            res = requests.post(addr+"/register/blockchain", json = data)
+        except:
+            return 'Error happen'
+
+@app.route('/mine', methods=['GET'])
+def mine():
+    if (not blockC.mine()):
+        return 'Mine TLE'
+    return "Block Added"
 
 
 
 if __name__ == '__main__':
-    app.run(debug=True, port=cfg.PORT)
+    app.run(debug=True, port=port)
 
 

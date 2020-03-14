@@ -4,7 +4,6 @@ import json
 import socket
 import blockchain.Transaction
 
-PORT = 5000
 
 URLS = {
     'login':'http://13.127.187.57/project/Blockchain-Land-Ledger/Server/Rest-APIs-master/api/login_api/login.php',
@@ -31,7 +30,12 @@ PAGES = {
 def ipRead():
     res = requests.get(url = URLS['ipRead'])
     data = res.json()
-    print ("All IP : "+str(data))
+    return data
+
+def ipUser(id):
+    res = requests.get(url = URLS['ipUser'], json={"userID":id})
+    data = res.json()
+    print("address :" + str(data))
     return data
 
 def ipRegis(userID, address):
@@ -101,7 +105,7 @@ def compareJSON(obj, jsonStr):
 def getIP():
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     s.connect(("8.8.8.8", 80))
-    return s.getsockname()[0] 
+    return s.getsockname()[0]
 
 def parseTransaction(obj):
     return blockchain.Transaction.Transaction(obj['index'],obj['price'],obj['landID'],obj['sellerID'],obj['buyerID'],obj['inspectID'],obj['sellSign'],obj['buySign'],obj['inspectSign'],obj['documents'])
