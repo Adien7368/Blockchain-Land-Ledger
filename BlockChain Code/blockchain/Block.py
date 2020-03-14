@@ -2,7 +2,7 @@ from hashlib import sha256
 import json
 import random
 from blockchain import Transaction
-LIMIT = 100000000
+LIMIT = 100000
 
 class Block:
     def __init__(self, index, transactions, timestamp, previous_hash):
@@ -30,8 +30,8 @@ class Block:
         return False
     
     def verify(self):
-        for transaction in self.transactions:
-            if not transaction.verify():
+        for t in self.transactions:
+            if not self.transactions[t].verify():
                 return False
         return True 
 
