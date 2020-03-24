@@ -24,7 +24,8 @@ URLS = {
 PAGES = {
     'login':'Login/index.html',
     'logintry':'Login/retryindex.html',
-    'regisUser':'registerUser.html'
+    'regisUser':'Register/index.html',
+    'intro':'Intro/index.html'
 }
 
 

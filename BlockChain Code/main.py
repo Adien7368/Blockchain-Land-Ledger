@@ -19,10 +19,30 @@ app = Flask(__name__, template_folder='Pages')
 
 #serving files 
 
+@app.route('/intro/<path:path>')
+def sendIntroFiles(path):
+    # print(path)
+    return send_from_directory('Pages/Intro',path)
+
 @app.route('/login/<path:path>')
 def sendFiles(path):
-    print(path)
+    # print(path)
     return send_from_directory('Pages/Login', path)
+
+@app.route('/register/<path:path>')
+def sendRegisFiles(path):
+    return send_from_directory('Pages/Register', path)
+
+#user regis page
+@app.route('/regisUser', methods = ['GET'])
+def regisUser():
+    return render_template(cfg.PAGES['regisUser'])
+
+
+#intro page
+@app.route('/', methods = ['GET'])
+def hello():
+    return render_template(cfg.PAGES['intro'])
 
 # creating global blockchain 
 blockC = BlockChain.BlockChain()
