@@ -18,11 +18,13 @@ if(args.p):
 app = Flask(__name__, template_folder='Pages')
 
 #serving files 
-
+@app.route('/dashboard/<path:path>')
+def sendDashFiles(path):
+    return send_from_directory('Pages/Dashboard', path)
 @app.route('/intro/<path:path>')
 def sendIntroFiles(path):
     # print(path)
-    return send_from_directory('Pages/Intro',path)
+    return send_from_directory('Pages/Intro', path)
 
 @app.route('/login/<path:path>')
 def sendFiles(path):
@@ -47,6 +49,7 @@ def hello():
 # creating global blockchain 
 blockC = BlockChain.BlockChain()
 blockC.port = port
+
 @app.route('/login', methods = ['GET'])
 def login():
     if(blockC.islogin()):
@@ -73,7 +76,6 @@ def loginCheck():
     if(res):
         return redirect(url_for("dashboard"))
     print (url_for("loginretry", retry=1))
-    time.sleep(10)
     return redirect(url_for("loginretry"))
     # except:
     #     print("Some Error Occured")
@@ -83,7 +85,7 @@ def loginCheck():
 @app.route('/dashboard', methods = ['GET'])
 def dashboard():
     if(blockC.islogin()):
-        return ''
+        return render_template(cfg.PAGES['dashboard'])
     else:
         return redirect(url_for("login"))
     
@@ -105,7 +107,7 @@ def pingIP():
         return "Wrong IP format"
 
 
-@app.route('/register/user', methods=['GET'])
+@app.route('/regisUser', methods=['GET'])
 def registerUserUI():
     return render_template(cfg.PAGES['regisUser'])
 
