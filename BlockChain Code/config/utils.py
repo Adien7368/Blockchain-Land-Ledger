@@ -25,7 +25,8 @@ PAGES = {
     'login':'Login/index.html',
     'logintry':'Login/retryindex.html',
     'regisUser':'Register/index.html',
-    'intro':'Intro/index.html'
+    'intro':'Intro/index.html',
+    'dashboard':'Dashboard/index.html'
 }
 
 
