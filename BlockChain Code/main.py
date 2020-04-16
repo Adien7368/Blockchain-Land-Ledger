@@ -1,4 +1,4 @@
-from flask import Flask, request, redirect, url_for, render_template 
+from flask import Flask, request, redirect, url_for, render_template ,send_from_directory, send_file
 from blockchain import BlockChain
 import requests
 import config.utils as cfg
@@ -6,7 +6,7 @@ import json
 import nacl.signing
 import nacl.encoding
 import argparse
-
+import time
 parser = argparse.ArgumentParser()
 parser.add_argument('-p', help='port number')
 args = parser.parse_args()
@@ -16,6 +16,33 @@ if(args.p):
     port = args.p
 # setting the template directory to /Pages
 app = Flask(__name__, template_folder='Pages')
+
+#serving files 
+
+@app.route('/intro/<path:path>')
+def sendIntroFiles(path):
+    # print(path)
+    return send_from_directory('Pages/Intro',path)
+
+@app.route('/login/<path:path>')
+def sendFiles(path):
+    # print(path)
+    return send_from_directory('Pages/Login', path)
+
+@app.route('/register/<path:path>')
+def sendRegisFiles(path):
+    return send_from_directory('Pages/Register', path)
+
+#user regis page
+@app.route('/regisUser', methods = ['GET'])
+def regisUser():
+    return render_template(cfg.PAGES['regisUser'])
+
+
+#intro page
+@app.route('/', methods = ['GET'])
+def hello():
+    return render_template(cfg.PAGES['intro'])
 
 # creating global blockchain 
 blockC = BlockChain.BlockChain()
@@ -28,14 +55,11 @@ def login():
 
 
 ## Retry login page
-@app.route('/login/<int:retry>', methods = ['GET'])
-def loginretry(retry):
+@app.route('/logintry', methods = ['GET'])
+def loginretry():
     if(blockC.islogin()):
         return redirect(url_for("dashboard"))
-    if(retry==1):
-        return render_template(cfg.PAGES['login'])
-    else:
-        return redirect(url_for("login"))
+    return render_template(cfg.PAGES['login'])
 
 
 
@@ -49,7 +73,8 @@ def loginCheck():
     if(res):
         return redirect(url_for("dashboard"))
     print (url_for("loginretry", retry=1))
-    return redirect(url_for("loginretry",retry=1))
+    time.sleep(10)
+    return redirect(url_for("loginretry"))
     # except:
     #     print("Some Error Occured")
     #     return redirect(url_for("login"))
@@ -61,7 +86,7 @@ def dashboard():
         return ''
     else:
         return redirect(url_for("login"))
-
+    
 @app.route('/logout', methods = ['GET'])
 def logout():
     if(not blockC.islogin()):
