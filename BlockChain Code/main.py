@@ -18,9 +18,14 @@ if(args.p):
 app = Flask(__name__, template_folder='Pages')
 
 #serving files 
+@app.route('/temp/<path:path>')
+def forDebugging(path):
+    return send_from_directory('Pages/map', path)
+
 @app.route('/dashboard/<path:path>')
 def sendDashFiles(path):
     return send_from_directory('Pages/Dashboard', path)
+
 @app.route('/intro/<path:path>')
 def sendIntroFiles(path):
     # print(path)
@@ -39,7 +44,6 @@ def sendRegisFiles(path):
 @app.route('/regisUser', methods = ['GET'])
 def regisUser():
     return render_template(cfg.PAGES['regisUser'])
-
 
 #intro page
 @app.route('/', methods = ['GET'])
@@ -81,11 +85,30 @@ def loginCheck():
     #     print("Some Error Occured")
     #     return redirect(url_for("login"))
 
+@app.route('/map', methods = ['GET'])
+def mapstart():
+    return render_template(cfg.PAGES['map'])
+
+@app.route('/notifications', methods = ['GET'])
+def notifications():
+    return render_template(cfg.PAGES['notification'])
+
+@app.route('/requests', methods = ['GET'])
+def requ():
+    return render_template(cfg.PAGES['requests'])
+
+@app.route('/tables', methods = ['GET'])
+def tab():
+    return render_template(cfg.PAGES['table'])
+
+@app.route('/user', methods = ['GET'])
+def userprofile():
+    return render_template(cfg.PAGES['user'])
 
 @app.route('/dashboard', methods = ['GET'])
 def dashboard():
     if(blockC.islogin()):
-        return render_template(cfg.PAGES['dashboard'])
+        return render_template(cfg.PAGES['map'])
     else:
         return redirect(url_for("login"))
     
