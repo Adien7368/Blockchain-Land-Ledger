@@ -26,7 +26,11 @@ PAGES = {
     'logintry':'Login/retryindex.html',
     'regisUser':'Register/index.html',
     'intro':'Intro/index.html',
-    'dashboard':'Dashboard/index.html'
+    'user':'Dashboard/user.html',
+    'map':'Dashboard/map.html',
+    'notification':'Dashboard/notifications.html',
+    'table':'Dashboard/tables.html',
+    'requests':'Dashboard/requests.html'
 }
 
 
