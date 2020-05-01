@@ -103,7 +103,7 @@ def tab():
 
 @app.route('/user', methods = ['GET'])
 def userprofile():
-    return render_template(cfg.PAGES['user'])
+    return render_template(cfg.PAGES['user'], name="Avinash Verma")
 
 @app.route('/dashboard', methods = ['GET'])
 def dashboard():
@@ -138,11 +138,12 @@ def registerUserUI():
 def registerUser():
     try:
         user = {}
+        print(request.form)
         user['user_name'] = request.form['user_name']
         user['user_pass'] = request.form['user_pass']
         user['name'] = request.form['name']
         user['email'] = request.form['email']
-        user['phone'] = request.form['phone']
+        user['phone'] = request.form['phone'].replace('-','')
         user['address'] = request.form['address']
         user['dob'] = request.form['dob']
         prikey = nacl.signing.SigningKey.generate()
@@ -155,9 +156,9 @@ def registerUser():
         if('message' in data and data['message']=='success'):
             return redirect(url_for("login"))
         else:
-            return redirect(url_for("registerUser"))
+            return redirect(url_for("registerUserUI"))
     except:
-        return redirect(url_for("registerUser"))
+        return redirect(url_for("registerUserUI"))
 
 @app.route('/register/transaction', methods=['POST'])
 def regTransaction():

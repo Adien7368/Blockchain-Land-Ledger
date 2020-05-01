@@ -34,7 +34,7 @@
 
                         <div class="card-body">
                             <h5 class="card-title text-center">Register</h5>
-                            <form class="form-signin" action="/register/user" method="POST" >
+                            <form name="userreg" class="form-signin" action="/register/user" onsubmit="return validate();" method="POST" >
                                 
                                 <div class="form-label-group">
                                     <input name="name" type="text" id="inputName" class="form-control" placeholder="Name"
@@ -56,9 +56,9 @@
                                 </div>
 
                                 <div class="form-label-group">
-                                    <input name="phone" type="text" id="inputPhone" class="form-control" placeholder="Phone No."
-                                        required autofocus>
-                                    <label for="inputPhone">Phone Number</label>
+                                    <input name="phone" type="tel" id="inputPhone" class="form-control" placeholder="Phone Number"
+                                        required autofocus pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}">
+                                    <label for="inputPhone">Phone Number 123-456-7890</label>
                                 </div> 
 
                                 <div class="form-label-group">
@@ -82,7 +82,7 @@
                                 </div>
 
                                 <div class="form-label-group">
-                                    <input type="password" id="inputConfirmPassword" class="form-control"
+                                    <input name="user_pass1" type="password" id="inputConfirmPassword" class="form-control"
                                         placeholder="Password" required>
                                     <label for="inputConfirmPassword">Confirm password</label>
                                 </div>
@@ -103,7 +103,23 @@
         </div>
     </body>
 
-    <script src="" async defer></script>
+    <script async defer>
+        function validate(){
+            var x = document.forms['userreg']['user_pass'].value;
+            var y = document.forms['userreg']['user_pass1'].value;
+            
+            if(x==y && x.length >5)
+                return true;
+            else {
+                if(x==y){
+                    alert("Password is very small (atleast 6 length)");
+                }else{
+                    alert("Password do not match! try again");
+                }
+                return false;
+            }
+        }
+    </script>
 </body>
 
 </html>
