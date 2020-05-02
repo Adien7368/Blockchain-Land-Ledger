@@ -46,7 +46,7 @@ class BlockChain:
                     print ("NodeIP: ")
                     print(self.nodesIP)
                     data = {'id':self.ownerDetails.userID,'address':cfg.getIP()+":"+str(self.port)}
-                    #self.distribute(data, '/imhere')
+                    # self.distribute(data, '/imhere')
                     return True
         return False
     

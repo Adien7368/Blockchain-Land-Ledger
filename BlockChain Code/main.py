@@ -103,12 +103,25 @@ def tab():
 
 @app.route('/user', methods = ['GET'])
 def userprofile():
-    return render_template(cfg.PAGES['user'], name="Avinash Verma")
+    if(blockC.islogin()):
+        return render_template(cfg.PAGES['user'] ,
+            name = blockC.ownerDetails.name, 
+            username = blockC.ownerDetails.username, 
+            email = blockC.ownerDetails.email,
+            address = blockC.ownerDetails.address,
+            dob = blockC.ownerDetails.dob)
+    else:  
+        return render_template(cfg.PAGES['login'])
 
 @app.route('/dashboard', methods = ['GET'])
 def dashboard():
     if(blockC.islogin()):
-        return render_template(cfg.PAGES['map'])
+        return render_template(cfg.PAGES['user'] ,
+            name = blockC.ownerDetails.name, 
+            username = blockC.ownerDetails.username, 
+            email = blockC.ownerDetails.email,
+            address = blockC.ownerDetails.address,
+            dob = blockC.ownerDetails.dob)
     else:
         return redirect(url_for("login"))
     
