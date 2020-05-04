@@ -69,16 +69,7 @@
 
         public function register() {
 
-            $query='INSERT INTO ' + $table + '''( price, 
-                                                land_id, 
-                                                seller_id, 
-                                                buyer_id, 
-                                                inspector_id, 
-                                                buy_hex, 
-                                                sell_hex, 
-                                                inspector_hex, 
-                                                documents ) 
-            VALUES (:price,:land_id,:seller_id,:buyer_id,:inspector_id,:buy_hex,:sell_hex,:inspector_hex,:documents)''';
+            $query='INSERT INTO ' + $table + '( price, land_id, seller_id, buyer_id, inspector_id, buy_hex, sell_hex, inspector_hex, documents ) VALUES (:price,:land_id,:seller_id,:buyer_id,:inspector_id,:buy_hex,:sell_hex,:inspector_hex,:documents)';
 
             $stmt=$this->conn->prepare($query);
 	        $stmt->bindParam(':price', $this->price);
