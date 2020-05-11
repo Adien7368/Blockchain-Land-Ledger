@@ -73,20 +73,17 @@
       <nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top " id="navigation-example">
         <div class="container-fluid">
           <div class="navbar-wrapper">
-            <a class="navbar-brand" href="javascript:void(0)">Land Details</a>
+            <div class="h3 container-fluid" style="color: whitesmoke;">Land Details</div>
           </div>
-          <button class="navbar-toggler" type="button" data-toggle="collapse" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation" data-target="#navigation-example">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="navbar-toggler-icon icon-bar"></span>
-            <span class="navbar-toggler-icon icon-bar"></span>
-            <span class="navbar-toggler-icon icon-bar"></span>
-          </button>
+          
           <div class="collapse navbar-collapse justify-content-end">
             <ul class="navbar-nav">
-              <b class="d-md-block">Logout</b>
-              <li class="nav-item">
-                <a class="nav-link" href="/logout">
-                  <i class="material-icons">person</i>
+              <li class="nav-item" href="/logout">
+                <a href="/logout">
+                  <button class="btn btn-primary">
+                    <i class="material-icons">person</i>
+                    Logout
+                  </button>
                 </a>
               </li>
             </ul>
@@ -124,7 +121,8 @@
                         </th>
                       </thead>
                       <tbody>
-                        <tr>
+                        <!-- The should be a loop the construct table-->
+                        <!-- <tr>
                           <td>
                             1
                           </td>
@@ -140,7 +138,7 @@
                           <td class="text-primary">
                             <a href="">View</a>
                           </td>
-                        </tr>
+                        </tr> -->
                       </tbody>
                     </table>
                   </div>
@@ -150,12 +148,6 @@
           </div>
         </div>
       </div>
-      
-      <script>
-        const x = new Date().getFullYear();
-        let date = document.getElementById('date');
-        date.innerHTML = '&copy; ' + x + date.innerHTML;
-      </script>
     </div>
   </div>
   <!--   Core JS Files   -->
@@ -174,8 +166,7 @@
   <script src="dashboard/assets/js/plugins/bootstrap-notify.js"></script>
   <!-- Control Center for Material Dashboard: parallax effects, scripts for the example pages etc -->
   <script src="dashboard/assets/js/material-dashboard.js?v=2.1.0"></script>
-  <!-- Material Dashboard DEMO methods, don't include it in your project! -->
-  <script src="dashboard/assets/demo/demo.js"></script>
+
   <script>
     $(document).ready(function() {
       $().ready(function() {

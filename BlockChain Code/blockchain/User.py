@@ -37,7 +37,7 @@ class User:
             print ('\terror USER: <check your data>')
             return False
         self.login = True
-        print('\tupdated USER: ok')
+        print('updated local object USER: ok')
         return True
     
     def logout(self):

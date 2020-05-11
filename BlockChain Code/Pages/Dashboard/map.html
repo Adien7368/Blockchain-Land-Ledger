@@ -102,14 +102,6 @@
               </div>
             </form>
             <ul class="navbar-nav">
-              <li class="nav-item">
-                <a class="nav-link" href="javascript:void(0)">
-                  <i class="material-icons">dashboard</i>
-                  <p class="d-lg-none d-md-block">
-                    Stats
-                  </p>
-                </a>
-              </li>
               <li class="nav-item dropdown">
                 <a class="nav-link" href="javscript:void(0)" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   <i class="material-icons">notifications</i>
@@ -126,10 +118,12 @@
                   <a class="dropdown-item" href="javascript:void(0)">Another One</a>
                 </div>
               </li>
-              <b class="d-md-block">Logout</b>
-              <li class="nav-item">
-                <a class="nav-link" href="/logout">
-                  <i class="material-icons">person</i>
+              <li class="nav-item" href="/logout">
+                <a href="/logout">
+                  <button class="btn btn-primary">
+                    <i class="material-icons">person</i>
+                    Logout
+                  </button>
                 </a>
               </li>
             </ul>
@@ -218,15 +212,55 @@
   <script src="dashboard/assets/js/material-dashboard.js?v=2.1.0"></script>
     
   <script>
-    var mymap = L.map('map').setView([51.505, -0.09], 13);
+    var mymap = L.map('map').setView([26.285529, 82.081047], 16);
+    var markers = [];
     L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
       attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
       maxZoom: 18,
       id: 'mapbox/streets-v11',
       tileSize: 512,
       zoomOffset: -1,
-      accessToken: '{{token}}'
+      accessToken: 'pk.eyJ1IjoiYXZpODkybmFzaCIsImEiOiJjazN0bHRndGgwM3oxM21vMXhzdDYxamxsIn0.xF0yq_BrS97Vfy_BBMmtXw'
     }).addTo(mymap);
+
+    function addMarkers(){
+      var values = JSON.parse(this.responseText);
+      values.forEach(marker => {
+          var cord = marker.coordinates.split(",").map(ele => parseFloat(ele));
+          markers.push({'land':marker,'mark':L.marker([cord[0],cord[1]])});
+      });
+    }
+
+    function editMarkers(){
+
+      var values = JSON.parse(this.responseText);
+      console.log(markers);
+      markers.forEach(ele => {
+        // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        // rewrite tag and UI for bindPopup
+        if(ele['land'].land_id in values){
+          ele['mark'].bindPopup("Its mine");
+        }else{
+          ele['mark'].bindPopup("Its not mine");
+        }
+      });
+      // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+      markers.forEach(ele => ele['mark'].addTo(mymap));
+    }
+
+    var oReq = new XMLHttpRequest();
+    oReq.addEventListener("load", addMarkers);
+    oReq.open("GET","http://13.127.187.57/project/Blockchain-Land-Ledger/Server/Rest-APIs-master/api/land_api/read.php");
+    oReq.send();
+
+    var oReq2 = new XMLHttpRequest();
+    oReq2.addEventListener("load", editMarkers);
+    // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+    // port should be vartiable
+    // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+    oReq2.open("GET","http://localhost:5000/landinfo")
+    oReq2.send();
+
   </script>
 
   <script>

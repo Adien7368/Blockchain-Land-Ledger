@@ -151,7 +151,6 @@ def registerUserUI():
 def registerUser():
     try:
         user = {}
-        print(request.form)
         user['user_name'] = request.form['user_name']
         user['user_pass'] = request.form['user_pass']
         user['name'] = request.form['name']
@@ -163,6 +162,7 @@ def registerUser():
         pubkey = prikey.verify_key
         dig_sign = {'pub':pubkey.encode(nacl.encoding.HexEncoder),'pri':prikey.encode(nacl.encoding.HexEncoder)}
         user['dig_sign'] = str(dig_sign)
+        print(user)
         res = requests.post(cfg.URLS['userCreate'], json=user)
         data = res.json()
         print("User register response: "+str(data))
@@ -222,9 +222,17 @@ def mine():
         return 'Mine TLE'
     return "Block Added"
 
+# gives current owner of lands (landId -> ownerId)
 
+@app.route('/landinfo',methods=['GET'])
+def landDetails():
+    if(not blockC.islogin()):
+        return "Please login to recieve data"
+    else:
+        return blockC.landDetails
+        
 
 if __name__ == '__main__':
-    app.run(debug=True, port=port)
+    app.run(host='0.0.0.0',debug=True, port=port)
 
 
