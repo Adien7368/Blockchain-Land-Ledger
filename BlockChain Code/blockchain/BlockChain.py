@@ -46,6 +46,10 @@ class BlockChain:
                     cfg.ipRegis(self.ownerDetails.userID, str(cfg.getIP())+":"+str(self.port))
                     self.nodesIP = cfg.ipRead()
                     print ("NodeIP: "+ str(self.nodesIP))
+                    landD = cfg.landinfoAll()
+                    for land in landD:
+                        self.landDetails[land['land_id']] = -1
+                    
                     data = {'id':self.ownerDetails.userID,'address':cfg.getIP()+":"+str(self.port)}
                     self.distribute(data, '/imhere')
                     return True

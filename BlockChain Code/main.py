@@ -227,10 +227,17 @@ def mine():
 @app.route('/landinfo',methods=['GET'])
 def landDetails():
     if(not blockC.islogin()):
-        return "Please login to recieve data"
+        return '{"message":"Please login to recieve data"}'
     else:
         return blockC.landDetails
         
+@app.route('/requestKarna',methods=['POST'])
+def requestSender():
+    if( not blockC.islogin()):
+        return redirect(url_for("login"))
+    else:
+        print(request.form)
+        return redirect(url_for("login"))
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0',debug=True, port=port)

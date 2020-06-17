@@ -229,19 +229,22 @@
           var cord = marker.coordinates.split(",").map(ele => parseFloat(ele));
           markers.push({'land':marker,'mark':L.marker([cord[0],cord[1]])});
       });
+      oReq2.send();
     }
 
-    function editMarkers(){
+   
 
+    function editMarkers(){
       var values = JSON.parse(this.responseText);
       console.log(markers);
       markers.forEach(ele => {
         // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
         // rewrite tag and UI for bindPopup
-        if(ele['land'].land_id in values){
+        // port should be variable 
+        if(values[ele['land'].land_id] != -1){
           ele['mark'].bindPopup("Its mine");
         }else{
-          ele['mark'].bindPopup("Its not mine");
+          ele['mark'].bindPopup("<form method='POST' action='/requestKarna' onsubmit='console.log(this);'> <input type='hidden' name='landID' value='"+ ele['land'].land_id +"'  > <input type='Float' name='price' > <button type='submit' class='btn btn-success'>Buy</button> </form>");
         }
       });
       // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -259,7 +262,7 @@
     // port should be vartiable
     // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
     oReq2.open("GET","http://localhost:5000/landinfo")
-    oReq2.send();
+    
 
   </script>
 
