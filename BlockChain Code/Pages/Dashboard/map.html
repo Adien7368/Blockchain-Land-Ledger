@@ -242,9 +242,21 @@
         // rewrite tag and UI for bindPopup
         // port should be variable 
         if(values[ele['land'].land_id] != -1){
-          ele['mark'].bindPopup("Its mine");
+          // send to the land dashboard containing details of selected land
+          ele['mark'].bindPopup("This land is yours!");
         }else{
-          ele['mark'].bindPopup("<form method='POST' action='/requestKarna' onsubmit='console.log(this);'> <input type='hidden' name='landID' value='"+ ele['land'].land_id +"'  > <input type='Float' name='price' > <button type='submit' class='btn btn-success'>Buy</button> </form>");
+          
+          var approv ="<div><h3>Interested in Buying? <i>Request Seller For More details.</i></h3>";
+          approv+="<h4>Fill the following Details to Request details</h4>";
+          approv+="<form method='POST' action='/requestKarna' onsubmit='console.log(this)'>";
+          approv+="<input type='hidden' name='landID' value='"+ ele['land'].land_id +"'></br>";
+          approv+="<input type='Float' name='price' placeholder='Enter Price'></br></br>";
+          approv+='<textarea name="message" id="" cols="30" rows="3" placeholder="Message to seller "></textarea>';
+          approv+="<button type='submit' class='btn btn-success'>Request</button>"; 
+          approv+="</form>";
+          approv+="</div>";
+
+          ele['mark'].bindPopup(approv);
         }
       });
       // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>

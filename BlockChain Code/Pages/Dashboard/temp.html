@@ -1,0 +1,27 @@
+<div>
+    <h2>Interested in Buying? <i>Request Seller For More details.</i></h2>
+    <h3>Fill the following Details to Request</h3>
+    <form method='POST' action='/requestKarna' onsubmit='console.log(this);'>
+        <input type='hidden' name='landID' value='"+ ele['land'].land_id +"'></br>
+        <input type='Float' name='price' placeholder="Enter Price"></br>
+        <!-- <input type="text" name ="message" placeholder="Enter your message here." width="20" height="50"> -->
+        <textarea name="message" id="" cols="30" rows="3" placeholder="Message to seller "></textarea>
+        <button type='submit' class='btn btn-success'>Request</button> 
+    </form>
+</div>
+<script>
+    var ans="\
+<div>\
+    <h2>Interested in Buying? <i>Request Seller For More details.</i></h2>\
+    <h3>Fill the following Details to Request</h3>\
+    <form method='POST' action='/requestKarna' onsubmit='console.log(this);'>\
+        <input type='hidden' name='landID'></br>\
+        <input type='Float' name='price' placeholder=\"Enter Price\"></br>\
+        <textarea name=\"message\"></textarea>\
+        <button type='submit' class='btn btn-success'>Request</button>\
+    </form>\
+</div>\
+";
+
+console.log(ans);
+</script>
