@@ -17,7 +17,10 @@ class BlockChain:
         self.transPool={}    # approved checked block waiting to be mined
 
     def addIP(self, id, address):
-        self.nodesIP.append((id, address))
+        print ((id,address))
+        if(not ({'id':id,'address':address} in self.nodesIP)):
+            
+            self.nodesIP.append({'id':id,'address':address})
 
     def islogin(self):
         return self.ownerDetails.login
@@ -27,7 +30,7 @@ class BlockChain:
         
     def distribute(self, obj, path):
         for peer in self.nodesIP:
-            res = requests.post(peer['address']+path, json=obj)
+            res = requests.post('http://'+ peer['address']+ path, json=obj)
             print("Sending trans.. "+peer['address']+":"+str(res))
     
     # def upadatePeers(self, peers):
@@ -39,14 +42,16 @@ class BlockChain:
             data = cfg.usernameinfo(user)
             if('message' in data and data['message']=='success'):
                 check = self.ownerDetails.logintry(data)
-                if check:
-                    self.landDetails = cfg.landinfo(self.ownerDetails.userID)    
+                if check:  
                     cfg.ipRegis(self.ownerDetails.userID, str(cfg.getIP())+":"+str(self.port))
                     self.nodesIP = cfg.ipRead()
-                    print ("NodeIP: ")
-                    print(self.nodesIP)
+                    print ("NodeIP: "+ str(self.nodesIP))
+                    landD = cfg.landinfoAll()
+                    for land in landD:
+                        self.landDetails[land['land_id']] = -1
+                    
                     data = {'id':self.ownerDetails.userID,'address':cfg.getIP()+":"+str(self.port)}
-                    #self.distribute(data, '/imhere')
+                    self.distribute(data, '/imhere')
                     return True
         return False
     
@@ -59,7 +64,7 @@ class BlockChain:
         # every data member stored will be cleared
         self.currentBlock = Block.Block(-1,[],-1,-1)
         self.nodesIP = []
-        self.landDetails = []
+        self.landDetails = {}
 
     def checkLedger(self, data):
         if(self.ownerDetails.verify(data)):

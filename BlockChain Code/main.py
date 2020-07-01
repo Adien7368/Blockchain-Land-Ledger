@@ -18,9 +18,14 @@ if(args.p):
 app = Flask(__name__, template_folder='Pages')
 
 #serving files 
+@app.route('/temp/<path:path>')
+def forDebugging(path):
+    return send_from_directory('Pages/map', path)
+
 @app.route('/dashboard/<path:path>')
 def sendDashFiles(path):
     return send_from_directory('Pages/Dashboard', path)
+
 @app.route('/intro/<path:path>')
 def sendIntroFiles(path):
     # print(path)
@@ -39,7 +44,6 @@ def sendRegisFiles(path):
 @app.route('/regisUser', methods = ['GET'])
 def regisUser():
     return render_template(cfg.PAGES['regisUser'])
-
 
 #intro page
 @app.route('/', methods = ['GET'])
@@ -81,11 +85,43 @@ def loginCheck():
     #     print("Some Error Occured")
     #     return redirect(url_for("login"))
 
+@app.route('/map', methods = ['GET'])
+def mapstart():
+    return render_template(cfg.PAGES['map'])
+
+@app.route('/notifications', methods = ['GET'])
+def notifications():
+    return render_template(cfg.PAGES['notification'])
+
+@app.route('/requests', methods = ['GET'])
+def requ():
+    return render_template(cfg.PAGES['requests'])
+
+@app.route('/tables', methods = ['GET'])
+def tab():
+    return render_template(cfg.PAGES['table'])
+
+@app.route('/user', methods = ['GET'])
+def userprofile():
+    if(blockC.islogin()):
+        return render_template(cfg.PAGES['user'] ,
+            name = blockC.ownerDetails.name, 
+            username = blockC.ownerDetails.username, 
+            email = blockC.ownerDetails.email,
+            address = blockC.ownerDetails.address,
+            dob = blockC.ownerDetails.dob)
+    else:  
+        return render_template(cfg.PAGES['login'])
 
 @app.route('/dashboard', methods = ['GET'])
 def dashboard():
     if(blockC.islogin()):
-        return render_template(cfg.PAGES['dashboard'])
+        return render_template(cfg.PAGES['user'] ,
+            name = blockC.ownerDetails.name, 
+            username = blockC.ownerDetails.username, 
+            email = blockC.ownerDetails.email,
+            address = blockC.ownerDetails.address,
+            dob = blockC.ownerDetails.dob)
     else:
         return redirect(url_for("login"))
     
@@ -119,22 +155,23 @@ def registerUser():
         user['user_pass'] = request.form['user_pass']
         user['name'] = request.form['name']
         user['email'] = request.form['email']
-        user['phone'] = request.form['phone']
+        user['phone'] = request.form['phone'].replace('-','')
         user['address'] = request.form['address']
         user['dob'] = request.form['dob']
         prikey = nacl.signing.SigningKey.generate()
         pubkey = prikey.verify_key
         dig_sign = {'pub':pubkey.encode(nacl.encoding.HexEncoder),'pri':prikey.encode(nacl.encoding.HexEncoder)}
         user['dig_sign'] = str(dig_sign)
+        print(user)
         res = requests.post(cfg.URLS['userCreate'], json=user)
         data = res.json()
         print("User register response: "+str(data))
         if('message' in data and data['message']=='success'):
             return redirect(url_for("login"))
         else:
-            return redirect(url_for("registerUser"))
+            return redirect(url_for("registerUserUI"))
     except:
-        return redirect(url_for("registerUser"))
+        return redirect(url_for("registerUserUI"))
 
 @app.route('/register/transaction', methods=['POST'])
 def regTransaction():
@@ -185,9 +222,24 @@ def mine():
         return 'Mine TLE'
     return "Block Added"
 
+# gives current owner of lands (landId -> ownerId)
 
+@app.route('/landinfo',methods=['GET'])
+def landDetails():
+    if(not blockC.islogin()):
+        return '{"message":"Please login to recieve data"}'
+    else:
+        return blockC.landDetails
+        
+@app.route('/requestKarna',methods=['POST'])
+def requestSender():
+    if( not blockC.islogin()):
+        return redirect(url_for("login"))
+    else:
+        print(request.form)
+        return redirect(url_for("login"))
 
 if __name__ == '__main__':
-    app.run(debug=True, port=port)
+    app.run(host='0.0.0.0',debug=True, port=port)
 
 

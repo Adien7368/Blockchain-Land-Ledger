@@ -34,29 +34,55 @@
 
                         <div class="card-body">
                             <h5 class="card-title text-center">Register</h5>
-                            <form class="form-signin">
+                            <form name="userreg" class="form-signin" action="/register/user" onsubmit="return validate();" method="POST" >
+                                
                                 <div class="form-label-group">
-                                    <input type="text" id="inputUserame" class="form-control" placeholder="Username"
+                                    <input name="name" type="text" id="inputName" class="form-control" placeholder="Name"
+                                        required autofocus>
+                                    <label for="inputName">Name</label>
+                                </div>
+
+
+                                <div class="form-label-group">
+                                    <input name="user_name" type="text" id="inputUserame" class="form-control" placeholder="Username"
                                         required autofocus>
                                     <label for="inputUserame">Username</label>
                                 </div>
 
                                 <div class="form-label-group">
-                                    <input type="email" id="inputEmail" class="form-control" placeholder="Email address"
+                                    <input name="email" type="email" id="inputEmail" class="form-control" placeholder="Email address"
                                         required>
                                     <label for="inputEmail">Email address</label>
                                 </div>
 
+                                <div class="form-label-group">
+                                    <input name="phone" type="tel" id="inputPhone" class="form-control" placeholder="Phone Number"
+                                        required autofocus pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}">
+                                    <label for="inputPhone">Phone Number 123-456-7890</label>
+                                </div> 
+
+                                <div class="form-label-group">
+                                    <input name="address" type="text" id="inputAddress" class="form-control" placeholder="Address"
+                                        required autofocus>
+                                    <label for="inputAddress">Address</label>
+                                </div> 
+
+                                <div class="form-label-group">
+                                    <input name="dob" type="date" id="inputDate" class="form-control" placeholder="Date of Birth"
+                                        required autofocus>
+                                    <label for="inputDate">Date of Birth</label>
+                                </div> 
+
                                 <hr>
 
                                 <div class="form-label-group">
-                                    <input type="password" id="inputPassword" class="form-control"
+                                    <input name="user_pass" type="password" id="inputPassword" class="form-control"
                                         placeholder="Password" required>
                                     <label for="inputPassword">Password</label>
                                 </div>
 
                                 <div class="form-label-group">
-                                    <input type="password" id="inputConfirmPassword" class="form-control"
+                                    <input name="user_pass1" type="password" id="inputConfirmPassword" class="form-control"
                                         placeholder="Password" required>
                                     <label for="inputConfirmPassword">Confirm password</label>
                                 </div>
@@ -77,7 +103,23 @@
         </div>
     </body>
 
-    <script src="" async defer></script>
+    <script async defer>
+        function validate(){
+            var x = document.forms['userreg']['user_pass'].value;
+            var y = document.forms['userreg']['user_pass1'].value;
+            
+            if(x==y && x.length >5)
+                return true;
+            else {
+                if(x==y){
+                    alert("Password is very small (atleast 6 length)");
+                }else{
+                    alert("Password do not match! try again");
+                }
+                return false;
+            }
+        }
+    </script>
 </body>
 
 </html>

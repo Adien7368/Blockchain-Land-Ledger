@@ -9,6 +9,7 @@ class User:
         self.address = ''
         self.walletID = -1
         self.login = False
+        self.dob = ''
 
 
     
@@ -27,6 +28,7 @@ class User:
         self.mobile = data['phone']
         self.email = data['email']
         self.address = data['address']
+        self.dob = data['dob']
 
     def logintry(self, data):
         try:
@@ -35,7 +37,7 @@ class User:
             print ('\terror USER: <check your data>')
             return False
         self.login = True
-        print('\tupdated USER: ok')
+        print('updated local object USER: ok')
         return True
     
     def logout(self):
