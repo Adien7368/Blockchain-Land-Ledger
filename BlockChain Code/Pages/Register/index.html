@@ -20,20 +20,14 @@
     <link rel="stylesheet" href="register/template.css">
 </head>
 
-<body>
-    <!--[if lt IE 7]>
-            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
-        <![endif]-->
-    <!-- This snippet uses Font Awesome 5 Free as a dependency. You can download it at fontawesome.io! -->
-
-    <body>
-        <div class="container">
+<body style="background: slategrey;">
+        <div class="container" style="background-color: slategrey;">
             <div class="row">
                 <div class="col-lg-10 col-xl-9 mx-auto">
                     <div class="card card-signin flex-row my-5">
 
-                        <div class="card-body">
-                            <h5 class="card-title text-center">Register</h5>
+                        <div class="card-body" style="background: lightblue;">
+                            <h5 style="font-size: 35px;font-weight: bolder; text-decoration: underline;" class="card-title text-center">Register Here</h5>
                             <form name="userreg" class="form-signin" action="/register/user" onsubmit="return validate();" method="POST" >
                                 
                                 <div class="form-label-group">
@@ -101,7 +95,6 @@
                 </div>
             </div>
         </div>
-    </body>
 
     <script async defer>
         function validate(){
