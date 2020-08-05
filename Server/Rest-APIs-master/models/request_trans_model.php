@@ -30,8 +30,8 @@
             $query='SELECT * FROM request_transaction WHERE seller_id=:seller_id';
             $stmt=$this->conn->prepare($query);
             $stmt->bindParam(':seller_id',$this->seller_id);
-            $stmt->execute();
-            return $stmt;            
+	    $stmt->execute();
+            return $stmt;
         }
 
         public function seller_sign(){
@@ -69,23 +69,20 @@
 
         public function register() {
 
-            $query='INSERT INTO request_transaction ( price, land_id, seller_id, buyer_id, inspector_id, buy_hex, sell_hex, inspector_hex, documents ) VALUES (:price,:land_id,:seller_id,:buyer_id,:inspector_id,:buy_hex,:sell_hex,:inspector_hex,:documents)';
-
+            $query='INSERT INTO request_transaction ( price, land_id, seller_id, buyer_id, buy_hex, sell_hex, documents ) VALUES (:price,:land_id,:seller_id,:buyer_id,:buy_hex,:sell_hex,:documents)';
             $stmt=$this->conn->prepare($query);
-	        $stmt->bindParam(':price', $this->price);
+	    $stmt->bindParam(':price', $this->price);
             $stmt->bindParam(':land_id', $this->land_id);
             $stmt->bindParam(':seller_id', $this->seller_id);
             $stmt->bindParam(':buyer_id', $this->buyer_id);
-            $stmt->bindParam(':inspector_id', $this->inspector_id);
             $stmt->bindParam(':buy_hex', $this->buy_hex);
             $stmt->bindParam(':sell_hex', $this->sell_hex);
-            $stmt->bindParam(':inspector_hex', $this->inspector_hex);
             $stmt->bindParam(':documents', $this->documents);
             if($stmt->execute()){
                 return 1;
             }else{
-		        return 0;
-	        }
+	        return 0;
+            }
         }
 
         public function delete(){

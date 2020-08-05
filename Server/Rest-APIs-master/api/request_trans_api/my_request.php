@@ -12,7 +12,6 @@ $db = $database->connect();
 
 $post= new post($db);
 $post->seller_id = isset($_GET['id'])? $_GET['id'] : die();
-
 $result = $post->my_requests();
 
 echo json_encode($result);
