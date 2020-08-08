@@ -5,9 +5,9 @@ from blockchain import Transaction
 LIMIT = 100000
 
 class Block:
-    def __init__(self, index, transactions, timestamp, previous_hash):
+    def __init__(self, index, transaction, timestamp, previous_hash):
         self.index = index
-        self.transactions = transactions
+        self.transaction = transaction
         self.timestamp = timestamp
         self.previous_hash = previous_hash
         self.nonce = 0
@@ -16,9 +16,9 @@ class Block:
         block_string = json.dumps(self.__dict__, sort_keys=True)
         return sha256(block_string.encode()).hexdigest()
     
-    def update(self, index, transactions, timestamp, previous_hash):
+    def update(self, index, transaction, timestamp, previous_hash):
         self.index = index
-        self.transactions = transactions
+        self.transaction = transaction
         self.timestamp = timestamp
         self.previous_hash = previous_hash
 
@@ -30,9 +30,8 @@ class Block:
         return False
     
     def verify(self):
-        for t in self.transactions:
-            if not self.transactions[t].verify():
-                return False
+        if not self.transactions[t].verify():
+            return False
         return True 
 
     def insert(self, transac):

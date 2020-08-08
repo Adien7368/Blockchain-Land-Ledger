@@ -1,6 +1,7 @@
 
 import requests
 import json
+import ast
 import socket
 import blockchain.Transaction
 
@@ -17,7 +18,10 @@ URLS = {
     'userCreate': 'http://13.127.187.57/project/Blockchain-Land-Ledger/Server/Rest-APIs-master/api/login_api/register.php',
     'ipRead':'http://13.127.187.57/project/Blockchain-Land-Ledger/Server/Rest-APIs-master/api/ip_api/login.php',
     'ipRegis':'http://13.127.187.57/project/Blockchain-Land-Ledger/Server/Rest-APIs-master/api/ip_api/create.php',
-    'ipDelete':'http://13.127.187.57/project/Blockchain-Land-Ledger/Server/Rest-APIs-master/api/ip_api/delete.php'
+    'ipDelete':'http://13.127.187.57/project/Blockchain-Land-Ledger/Server/Rest-APIs-master/api/ip_api/delete.php',
+    'createTransactionRequest':'http://13.127.187.57/project/Blockchain-Land-Ledger/Server/Rest-APIs-master/api/request_trans_api/create.php',
+    'deleteTransactionRequest':'http://13.127.187.57/project/Blockchain-Land-Ledger/Server/Rest-APIs-master/api/request_trans_api/delete.php',
+    'getRequestByID':'http://13.127.187.57/project/Blockchain-Land-Ledger/Server/Rest-APIs-master/api/request_trans_api/my_request.php?id='
 }
 
 
@@ -99,8 +103,13 @@ def usernameinfo(username):
 
 def publicKey(userID):
     obj = userinfo(userID)
-    Key = json.loads(obj['dig_sign'])
+    Key = ast.literal_eval(obj['dig_sign'])
     return Key['pub']
+
+def privateKey(userID):
+    obj = userinfo(userID)
+    Key = ast.literal_eval(obj['dig_sign'])
+    return Key['pri']
     
 def compareJSON(obj, jsonStr):
     objc = json.loads(jsonStr)
@@ -114,5 +123,12 @@ def getIP():
     s.connect(("8.8.8.8", 80))
     return s.getsockname()[0]
 
+def sendBuyRequest(data):
+    # print ({'price':data.price,'land_id':data.landID,'seller_id':data.sellerID,'buyer_id':data.buyerID,'buy_hex':data.buySign.__str__(),'sell_hex':data.sellSign.__str__(),'documents':data.documents})
+    res = requests.post(url = URLS['createTransactionRequest'], json={'price':data.price,'land_id':data.landID,'seller_id':data.sellerID,'buyer_id':data.buyerID,'buy_hex':'data.buySign.__str__()','sell_hex':'data.sellSign.__str__()','documents':data.documents})
+    print(res)
+    return True
+
+# need update
 def parseTransaction(obj):
     return blockchain.Transaction.Transaction(obj['index'],obj['price'],obj['landID'],obj['sellerID'],obj['buyerID'],obj['inspectID'],obj['sellSign'],obj['buySign'],obj['inspectSign'],obj['documents'])
