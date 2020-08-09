@@ -248,7 +248,7 @@
           
           var approv ="<div><h3>Interested in Buying? <i>Request Seller For More details.</i></h3>";
           approv+="<h4>Fill the following Details to Request details</h4>";
-          approv+="<form method='POST' action='/requestKarna' onsubmit='console.log(this)'>";
+          approv+="<form method='POST' action='/transactionRequest' onsubmit='console.log(this)'>";
           approv+="<input type='hidden' name='landID' value='"+ ele['land'].land_id +"'></br>";
           approv+="<input type='Float' name='price' placeholder='Enter Price'></br></br>";
           approv+='<textarea name="message" id="" cols="30" rows="3" placeholder="Message to seller "></textarea>';

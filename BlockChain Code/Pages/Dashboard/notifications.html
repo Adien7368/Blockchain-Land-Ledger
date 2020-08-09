@@ -150,50 +150,30 @@
       <!-- End Navbar -->
       <div class="content">
         <div class="container-fluid">
-          <div class="card">
-            <div class="card-body">
-              <div class="row">
-                <div class="col-md-12">
-                  <div class="alert alert-success" >
-                    <!-- <span>You have a purchase request for your land id: __land_id_here__ <button class=" popup btn btn-primary" onclick="myFunction()">View Details</button></span> -->
-                    You have a purchase request for your land. 
-                    <button class="popup btn btn-primary" onclick="myFunction()">view details
-                      <div style="color: white; font-size: 14px; font-weight: 200; font-family: sans-serif; line-height: 1.5em;" class="popuptext" id="myPopup">
-                        Name of buyer: __Name of buyer__ <br>
-                        Land id: __Land_id__ <br>
-                        AMount offered: __amount__ Rs. <br>
-                        Transaction validated by blockchain : Yes <br>
-                        Message: __message__ <br>
-                      </div>
-                    </button>
-                    <button class=" btn btn-primary">approve Transaction</button>
+          {% for ele in notifications %}
+            <div class="card">
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="alert alert-success" >
+                      <!-- <span style="visibility: hidden;">You have a purchase request for your land id: __land_id_here__ <button class=" popup btn btn-primary" onclick="myFunction()">View Details</button></span> -->
+                      {{ele['message']}}
+                      <button class="popup btn btn-primary " onclick="myFunction({{ele['trans_id']}})">view details
+                        <div style="color: white; font-size: 14px; font-weight: 200; font-family: sans-serif; line-height: 1.5em;" class="popuptext" id="{{ele['trans_id']}}">
+                          Name of buyer: __Name of buyer__ <br>
+                          Land id: {{ele['land_id']}} <br>
+                          Amount offered: {{ele['price']}} <br>
+                          Transaction validated by blockchain : Yes/No <br>
+                          Message: __message__ <br>
+                        </div>
+                      </button>
+                      <button class=" btn btn-primary" onclick="approve({{ele['trans_id']}})">approve Transaction</button>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-          <div class="card">
-            <div class="card-body">
-              <div class="row">
-                <div class="col-md-12">
-                  <div class="alert alert-success" >
-                    <!-- <span>You have a purchase request for your land id: __land_id_here__ <button class=" popup btn btn-primary" onclick="myFunction()">View Details</button></span> -->
-                    You have a purchase request for your land. 
-                    <button class="popup btn btn-primary" onclick="myFunction()">view details
-                      <div style="color: white; font-size: 14px; font-weight: 200; font-family: sans-serif; line-height: 1.5em;" class="popuptext" id="myPopup">
-                        Name of buyer: __Name of buyer__ <br>
-                        Land id: __Land_id__ <br>
-                        AMount offered: __amount__ Rs. <br>
-                        Transaction validated by blockchain : Yes <br>
-                        Message: __message__ <br>
-                      </div>
-                    </button>
-                    <button class=" btn btn-primary">approve Transaction</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+          {% endfor %}
         </div>
       </div>
     </div>
@@ -217,8 +197,8 @@
   <!-- Material Dashboard DEMO methods, don't include it in your project! -->
   <script src="dashboard/assets/demo/demo.js"></script>
   <script>
-    function myFunction() {
-      var popup = document.getElementById("myPopup");
+    function myFunction(id) {
+      var popup = document.getElementById(id);
       popup.classList.toggle("show");
     }
   </script>

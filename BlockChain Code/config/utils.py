@@ -125,10 +125,16 @@ def getIP():
 
 def sendBuyRequest(data):
     # print ({'price':data.price,'land_id':data.landID,'seller_id':data.sellerID,'buyer_id':data.buyerID,'buy_hex':data.buySign.__str__(),'sell_hex':data.sellSign.__str__(),'documents':data.documents})
-    res = requests.post(url = URLS['createTransactionRequest'], json={'price':data.price,'land_id':data.landID,'seller_id':data.sellerID,'buyer_id':data.buyerID,'buy_hex':'data.buySign.__str__()','sell_hex':'data.sellSign.__str__()','documents':data.documents})
+    res = requests.post(url = URLS['createTransactionRequest'], json={'price':data.price,'land_id':data.landID,'seller_id':data.sellerID,'buyer_id':data.buyerID,'buy_hex':data.buySign.__str__(),'sell_hex':data.sellSign.__str__(),'documents':data.documents})
     print(res)
     return True
 
 # need update
 def parseTransaction(obj):
-    return blockchain.Transaction.Transaction(obj['index'],obj['price'],obj['landID'],obj['sellerID'],obj['buyerID'],obj['inspectID'],obj['sellSign'],obj['buySign'],obj['inspectSign'],obj['documents'])
+    return blockchain.Transaction.Transaction(obj['trans_id'],obj['price'],obj['landID'],obj['sellerID'],obj['buyerID'],obj['sellSign'],obj['buySign'],obj['documents'])
+
+def getNotification(seller_id):
+    res = requests.get(url = URLS['getRequestByID']+str(seller_id))
+    print (res.json())
+    return res.json()
+    

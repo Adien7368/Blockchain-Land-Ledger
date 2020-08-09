@@ -92,8 +92,23 @@ def mapstart():
 
 @app.route('/notifications', methods = ['GET'])
 def notifications():
-    return render_template(cfg.PAGES['notification'])
+    if(blockC.islogin()):
+        data = cfg.getNotification(blockC.ownerDetails.userID)
+        notifications = []
+        for x in data:
+            if(x['sell_hex']==0):
+                temp = x
+                temp['message'] = 'You have a purchase request for your land.'
+                notifications.append(temp)
+            else:
+                temp = x
+                temp['message'] = 'You had already approved this one'
+                notifications.append(temp)
 
+        return render_template(cfg.PAGES['notification'], notifications = notifications)
+    else:
+        return redirect(url_for("login"))
+        
 @app.route('/requests', methods = ['GET'])
 def requ():
     return render_template(cfg.PAGES['requests'])
@@ -228,15 +243,15 @@ def landDetails():
     else:
         return blockC.landDetails
         
-@app.route('/requestKarna',methods=['POST'])
+@app.route('/transactionRequest',methods=['POST'])
 def requestSender():
     if( not blockC.islogin()):
         return redirect(url_for("login"))
     else:
+
         trans = transaction.Transaction(request.form['price'], request.form['landID'], blockC.landDetails[request.form['landID']], blockC.ownerDetails.userID,'','','documents url')
         if(trans.signBuyer()):
             cfg.sendBuyRequest(trans)
-        print(request.form)
         return redirect(url_for("login"))
 
 if __name__ == '__main__':
