@@ -6,8 +6,8 @@ import uuid
 import json
 
 class Transaction:
-    def __init__(self, price, landID, sellerID, buyerID, sellSign, buySign, documents):
-        self.index = uuid.uuid4().hex
+    def __init__(self, index, price, landID, sellerID, buyerID, sellSign, buySign, documents):
+        self.index = index
         self.price = price
         self.landID = landID
         self.sellerID = sellerID
@@ -28,7 +28,7 @@ class Transaction:
         psellKey = cfg.privateKey(self.sellerID)
         if (psellKey == ''):
             return False
-        psellKey = nacl.signing.SigningKey(pbuyKey, encoder=nacl.encoding.HexEncoder)
+        psellKey = nacl.signing.SigningKey(psellKey, encoder=nacl.encoding.HexEncoder)
         sellSign = psellKey.sign(self.__str__(), encoder=nacl.encoding.HexEncoder)
         self.sellSign = sellSign
         

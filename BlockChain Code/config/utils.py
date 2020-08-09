@@ -3,7 +3,7 @@ import requests
 import json
 import ast
 import socket
-import blockchain.Transaction
+from blockchain import Transaction,Block
 
 
 URLS = {
@@ -143,7 +143,11 @@ def sendBuyRequest(data):
 
 # need update
 def parseTransaction(obj):
-    return blockchain.Transaction.Transaction(obj['trans_id'],obj['price'],obj['landID'],obj['sellerID'],obj['buyerID'],obj['sellSign'],obj['buySign'],obj['documents'])
+    return Transaction.Transaction(obj['index'],obj['price'],obj['landID'],obj['sellerID'],obj['buyerID'],obj['sellSign'],obj['buySign'],obj['documents'])
+
+def parseBlock(obj):
+    return Block.Block(obj['index'],parseTransaction(obj['transaction']),obj['timestamp'],obj['previous_hash'],obj['nonce'])
+
 
 def getNotification(seller_id):
     res = requests.get(url = URLS['getRequestByID']+str(seller_id))

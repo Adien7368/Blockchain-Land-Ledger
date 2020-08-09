@@ -11,7 +11,7 @@ import socket
 class BlockChain:
     def __init__(self):
         self.port = 5000
-        self.ledger = [Block.Block(0,Transaction.Transaction(-1,-1,-1,-1,'','',''),0,0)] # type: List[Block.Block]
+        self.ledger = [Block.Block(0,Transaction.Transaction(-1,-1,-1,-1,-1,'','',''),0,0)] # type: List[Block.Block]
         self.ownerDetails = User.User()
         self.nodesIP = []
         self.landDetails = {}
@@ -26,14 +26,23 @@ class BlockChain:
     def islogin(self):
         return self.ownerDetails.login  
 
+    def ledgerToJSON(self):
+        ledger = []
+        for x in self.ledger:
+            ledger.append(x.toJSON())
+        return ledger
+
     def insertTransaction(self, obj):
         try:
             block = Block.Block(1+len(self.ledger),obj,time.time(),self.ledger[len(self.ledger)-1].compute_hash())
             ledger = []
             for bl in self.ledger:
                 ledger.append(bl.toJSON())
+            ledger.append(block.toJSON())
             ## mining done here 
-            self.distribute({"block":block.toJSON(),"ledger":ledger},'/register/blockchain')
+            self.ledger.append(block)
+            self.setLedger(self.ledger)
+            self.distribute({"ledger":ledger},'/register/blockchain')
         except Exception as e:
             cfg.printErr(e)
         
@@ -42,8 +51,9 @@ class BlockChain:
             cfg.printLogData(self.nodesIP)
             if(peer['id'] != self.ownerDetails.userID):
                 try:
-                    requests.post('http://'+ peer['address']+ path, json=obj, timeout=1)
+                    res = requests.post('http://'+ peer['address']+ path, json=obj, timeout=1)
                     cfg.printAPIData("Sending trans.. "+peer['address']+":")
+                    cfg.printAPIData(res.json())
                 except socket.timeout as e:
                     cfg.printErr(e)
                 except Exception as e:
@@ -93,6 +103,15 @@ class BlockChain:
             return True
         else:
             return False
+
+    def setLedger(self,ledger):
+        for land in self.landDetails:
+            self.landDetails[land]=-1
+        for ele in ledger:
+            if(ele.transaction.landID!=-1):
+                self.landDetails[str(ele.transaction.landID)] = int(ele.transaction.buyerID)
+        print(self.landDetails)
+        self.ledger = ledger
 
     # def requestBuy(self, landID, offerPrice):
     #     URL = "http://localhost:3030/requestBuy"
