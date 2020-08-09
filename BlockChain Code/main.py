@@ -80,7 +80,7 @@ def loginCheck():
     res = blockC.login(user, passw)
     if(res):
         return redirect(url_for("dashboard"))
-    print (url_for("loginretry", retry=1))
+    
     return redirect(url_for("loginretry"))
     # except:
     #     print("Some Error Occured")
@@ -208,25 +208,23 @@ def regTransaction():
 @app.route('/register/blockchain', methods=['POST'])
 def regBlockChain():
     obj = json.loads(request.get_data())
-    try:
-        userID, leg = cfg.parseLedger(obj)
-    except:
-        return 'Error'
+    print (obj)
     
-    if(len(blockC.ledger)<len(leg)):
-        blockC.ledger = leg
-        tempTransIndex = {}
-        for block in leg:
-            print ("Not implimented")
-        # not implimented
+    # if(len(blockC.ledger)<len(leg)):
+    #     blockC.ledger = leg
+    #     tempTransIndex = {}
+    #     for block in leg:
+    #         print ("Not implimented")
+    #     # not implimented
                 
-    else:
-        try:
-            addr = cfg.ipUser(userID)
-            data = {'userID':userID, 'ledger':blockC.ledger}
-            res = requests.post(addr+"/register/blockchain", json = data)
-        except:
-            return 'Error happen'
+    # else:
+    #     try:
+    #         addr = cfg.ipUser(userID)
+    #         data = {'userID':userID, 'ledger':blockC.ledger}
+    #         res = requests.post(addr+"/register/blockchain", json = data)
+    #     except:
+    #         return 'Error happen'
+    return '{}'
 
 @app.route('/mine', methods=['GET'])
 def mine():
@@ -250,8 +248,9 @@ def requestSender():
     else:
 
         trans = transaction.Transaction(request.form['price'], request.form['landID'], blockC.landDetails[request.form['landID']], blockC.ownerDetails.userID,'','','documents url')
-        if(trans.signBuyer()):
-            cfg.sendBuyRequest(trans)
+        trans.signBuyer()
+        # cfg.sendBuyRequest(trans)
+        blockC.insertTransaction(trans)
         return redirect(url_for("login"))
 
 if __name__ == '__main__':

@@ -13,7 +13,7 @@ class Block:
         self.nonce = 0
 
     def compute_hash(self):
-        block_string = json.dumps(self.__dict__, sort_keys=True)
+        block_string = json.dumps(self.toJSON(), sort_keys=True)
         return sha256(block_string.encode()).hexdigest()
     
     def update(self, index, transaction, timestamp, previous_hash):
@@ -36,4 +36,14 @@ class Block:
 
     def insert(self, transac):
         self.transactions.append(transac)
+
+    def toJSON(self):
+        val = {
+            'index':self.index,
+            'transaction':self.transaction.toJSON(),
+            'timestamp':self.timestamp,
+            'previous_hash':self.previous_hash,
+            'nonce':self.nonce
+        }
+        return val
         
