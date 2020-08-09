@@ -88,7 +88,7 @@ def loginCheck():
 
 @app.route('/map', methods = ['GET'])
 def mapstart():
-    return render_template(cfg.PAGES['map'])
+    return render_template(cfg.PAGES['map'], port = port)
 
 @app.route('/notifications', methods = ['GET'])
 def notifications():

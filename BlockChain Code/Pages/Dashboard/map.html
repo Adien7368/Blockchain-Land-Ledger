@@ -270,10 +270,7 @@
 
     var oReq2 = new XMLHttpRequest();
     oReq2.addEventListener("load", editMarkers);
-    // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-    // port should be vartiable
-    // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-    oReq2.open("GET","http://localhost:5000/landinfo")
+    oReq2.open("GET","http://localhost:{{port}}/landinfo")
     
 
   </script>
