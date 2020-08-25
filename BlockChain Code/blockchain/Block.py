@@ -5,15 +5,15 @@ from blockchain import Transaction
 LIMIT = 100000
 
 class Block:
-    def __init__(self, index, transaction, timestamp, previous_hash):
+    def __init__(self, index, transaction, timestamp, previous_hash, nonce = 0):
         self.index = index
         self.transaction = transaction
         self.timestamp = timestamp
         self.previous_hash = previous_hash
-        self.nonce = 0
+        self.nonce = nonce
 
     def compute_hash(self):
-        block_string = json.dumps(self.__dict__, sort_keys=True)
+        block_string = json.dumps(self.toJSON(), sort_keys=True)
         return sha256(block_string.encode()).hexdigest()
     
     def update(self, index, transaction, timestamp, previous_hash):
@@ -30,10 +30,20 @@ class Block:
         return False
     
     def verify(self):
-        if not self.transactions[t].verify():
+        if not self.transaction.verify():
             return False
         return True 
 
     def insert(self, transac):
-        self.transactions.append(transac)
+        self.transaction.append(transac)
+
+    def toJSON(self):
+        val = {
+            'index':self.index,
+            'transaction':self.transaction.toJSON(),
+            'timestamp':self.timestamp,
+            'previous_hash':self.previous_hash,
+            'nonce':self.nonce
+        }
+        return val
         

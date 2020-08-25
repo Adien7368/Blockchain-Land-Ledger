@@ -3,7 +3,7 @@ import requests
 import json
 import ast
 import socket
-import blockchain.Transaction
+from blockchain import Transaction,Block
 
 
 URLS = {
@@ -37,6 +37,18 @@ PAGES = {
     'requests':'Dashboard/requests.html'
 }
 
+def colored(r, g, b, text):
+    return "\033[38;2;{};{};{}m{} \033[38;2;255;255;255m".format(r, g, b, text)
+
+def printErr(obj):
+    print(colored(255,0,0,obj))
+
+def printAPIData(obj):
+    print(colored(0,255,0,obj))
+
+def printLogData(obj):
+    print(colored(255,255,0,obj))
+
 
 def ipRead():
     res = requests.get(url = URLS['ipRead'])
@@ -46,43 +58,43 @@ def ipRead():
 def ipUser(id):
     res = requests.get(url = URLS['ipUser'], json={"userID":id})
     data = res.json()
-    print("address :" + str(data))
+    printAPIData("address :" + str(data))
     return data
 
 def ipRegis(userID, address):
     res = requests.post(url = URLS['ipRegis'], json={"id":userID, "address":address})
     data = res.json()
-    print("Register ip : " + str(data))
+    printAPIData("Register ip : " + str(data))
     return data
 
 def ipDelete(userID):
     res = requests.post(url = URLS['ipDelete'], json={"id":userID})
     data = res.json()
-    print("Delete ip : "+str(data))
+    printAPIData("Delete ip : "+str(data))
     return data
 
 def landinfoAll():
     res = requests.get(url = URLS['land'])
     data = res.json()
-    print(data)
+    printAPIData(data)
     return data
 
 def landinfo(id):
     res = requests.get(url = URLS['landID']+str(id))
     data = res.json()
-    print(data)
+    printAPIData(data)
     return data
 
 def userinfoAll():
     res = requests.get(url = URLS['user'])
     data = res.json()
-    print (data)
+    printAPIData(data)
     return data
 
 def userlogin(user, passw):
     res = requests.post(url = URLS['login'], json = {"user_name":user,"user_pass":passw})
     data = res.json()
-    print("Login : "+str(data))
+    printAPIData("Login : "+str(data))
     try:
         return (data['message']=='success')
     except:
@@ -91,13 +103,13 @@ def userlogin(user, passw):
 def userinfo(id):
     res = requests.get(url = URLS['userID']+str(id))
     data = res.json()
-    print ("UserID Info : "+str(data))
+    printAPIData("UserID Info : "+str(data))
     return data
 
 def usernameinfo(username):
     res = requests.get(url = URLS['userName']+str(username))
     data = res.json()
-    print("Username Info : "+ str(data))
+    printAPIData("Username Info : "+ str(data))
     return data
 
 
@@ -126,15 +138,19 @@ def getIP():
 def sendBuyRequest(data):
     # print ({'price':data.price,'land_id':data.landID,'seller_id':data.sellerID,'buyer_id':data.buyerID,'buy_hex':data.buySign.__str__(),'sell_hex':data.sellSign.__str__(),'documents':data.documents})
     res = requests.post(url = URLS['createTransactionRequest'], json={'price':data.price,'land_id':data.landID,'seller_id':data.sellerID,'buyer_id':data.buyerID,'buy_hex':data.buySign.__str__(),'sell_hex':data.sellSign.__str__(),'documents':data.documents})
-    print(res)
+    printAPIData(res)
     return True
 
 # need update
 def parseTransaction(obj):
-    return blockchain.Transaction.Transaction(obj['trans_id'],obj['price'],obj['landID'],obj['sellerID'],obj['buyerID'],obj['sellSign'],obj['buySign'],obj['documents'])
+    return Transaction.Transaction(obj['index'],obj['price'],obj['landID'],obj['sellerID'],obj['buyerID'],obj['sellSign'],obj['buySign'],obj['documents'])
+
+def parseBlock(obj):
+    return Block.Block(obj['index'],parseTransaction(obj['transaction']),obj['timestamp'],obj['previous_hash'],obj['nonce'])
+
 
 def getNotification(seller_id):
     res = requests.get(url = URLS['getRequestByID']+str(seller_id))
-    print (res.json())
+    printAPIData(res.json())
     return res.json()
     

@@ -241,7 +241,7 @@
         // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
         // rewrite tag and UI for bindPopup
         // port should be variable 
-        if(values[ele['land'].land_id] != -1){
+        if(values[ele['land'].land_id] == {{myId}}){
           // send to the land dashboard containing details of selected land
           ele['mark'].bindPopup("This land is yours!");
         }else{
@@ -270,10 +270,7 @@
 
     var oReq2 = new XMLHttpRequest();
     oReq2.addEventListener("load", editMarkers);
-    // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-    // port should be vartiable
-    // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-    oReq2.open("GET","http://localhost:5000/landinfo")
+    oReq2.open("GET","http://localhost:{{port}}/landinfo")
     
 
   </script>

@@ -8,6 +8,7 @@ import nacl.signing
 import nacl.encoding
 import argparse
 import time
+import uuid
 parser = argparse.ArgumentParser()
 parser.add_argument('-p', help='port number')
 args = parser.parse_args()
@@ -80,7 +81,7 @@ def loginCheck():
     res = blockC.login(user, passw)
     if(res):
         return redirect(url_for("dashboard"))
-    print (url_for("loginretry", retry=1))
+    
     return redirect(url_for("loginretry"))
     # except:
     #     print("Some Error Occured")
@@ -88,8 +89,11 @@ def loginCheck():
 
 @app.route('/map', methods = ['GET'])
 def mapstart():
-    return render_template(cfg.PAGES['map'])
-
+    if(blockC.islogin()):
+        return render_template(cfg.PAGES['map'], port = port, myId = blockC.ownerDetails.userID)
+    else:
+        return redirect(url_for("login"))
+        
 @app.route('/notifications', methods = ['GET'])
 def notifications():
     if(blockC.islogin()):
@@ -189,6 +193,10 @@ def registerUser():
     except:
         return redirect(url_for("registerUserUI"))
 
+@app.route('/blockchain/logs',methods=['GET'])
+def blocklogs():
+    return {'land':blockC.landDetails,'chain':blockC.ledgerToJSON()}
+
 @app.route('/register/transaction', methods=['POST'])
 def regTransaction():
     obj = json.loads(request.get_data())
@@ -208,25 +216,20 @@ def regTransaction():
 @app.route('/register/blockchain', methods=['POST'])
 def regBlockChain():
     obj = json.loads(request.get_data())
-    try:
-        userID, leg = cfg.parseLedger(obj)
-    except:
-        return 'Error'
-    
-    if(len(blockC.ledger)<len(leg)):
-        blockC.ledger = leg
-        tempTransIndex = {}
-        for block in leg:
-            print ("Not implimented")
-        # not implimented
-                
-    else:
+        
+    if(len(blockC.ledger)<len(obj['ledger'])):
+        ledger = []
+        for x in obj['ledger']:
+            ledger.append(cfg.parseBlock(x))
+        blockC.setLedger(ledger)
+        blockC.distribute({"ledger":blockC.ledgerToJSON()},'/register/blockchain')     
+        return '{"message":"accepted"}'
+    elif(len(blockC.ledger)>len(obj['ledger'])):
         try:
-            addr = cfg.ipUser(userID)
-            data = {'userID':userID, 'ledger':blockC.ledger}
-            res = requests.post(addr+"/register/blockchain", json = data)
-        except:
-            return 'Error happen'
+            return {"ledger":blockC.ledgerToJSON()}.__dict__
+        except Exception as e:
+            cfg.printErr(e)
+    return '{}'
 
 @app.route('/mine', methods=['GET'])
 def mine():
@@ -249,9 +252,10 @@ def requestSender():
         return redirect(url_for("login"))
     else:
 
-        trans = transaction.Transaction(request.form['price'], request.form['landID'], blockC.landDetails[request.form['landID']], blockC.ownerDetails.userID,'','','documents url')
-        if(trans.signBuyer()):
-            cfg.sendBuyRequest(trans)
+        trans = transaction.Transaction( uuid.uuid4().hex,request.form['price'], request.form['landID'], blockC.landDetails[request.form['landID']], blockC.ownerDetails.userID,'','','documents url')
+        trans.signBuyer()
+        # cfg.sendBuyRequest(trans)
+        blockC.insertTransaction(trans)
         return redirect(url_for("login"))
 
 if __name__ == '__main__':
