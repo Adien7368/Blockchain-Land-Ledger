@@ -1,5 +1,6 @@
 from flask import Flask, request, redirect, url_for, render_template ,send_from_directory, send_file
-from blockchain import BlockChain
+import blockchain.BlockChain as BlockChain
+import blockchain.Transaction as transaction
 import requests
 import config.utils as cfg
 import json
@@ -91,8 +92,23 @@ def mapstart():
 
 @app.route('/notifications', methods = ['GET'])
 def notifications():
-    return render_template(cfg.PAGES['notification'])
+    if(blockC.islogin()):
+        data = cfg.getNotification(blockC.ownerDetails.userID)
+        notifications = []
+        for x in data:
+            if(x['sell_hex']==0):
+                temp = x
+                temp['message'] = 'You have a purchase request for your land.'
+                notifications.append(temp)
+            else:
+                temp = x
+                temp['message'] = 'You had already approved this one'
+                notifications.append(temp)
 
+        return render_template(cfg.PAGES['notification'], notifications = notifications)
+    else:
+        return redirect(url_for("login"))
+        
 @app.route('/requests', methods = ['GET'])
 def requ():
     return render_template(cfg.PAGES['requests'])
@@ -201,12 +217,8 @@ def regBlockChain():
         blockC.ledger = leg
         tempTransIndex = {}
         for block in leg:
-            for trans in block.transactions:
-                tempTransIndex[trans.index] = trans
-                if (not (trans.index in blockC.transactionIndex)):
-                    blockC.transactionIndex[trans.index] = trans
-                if (trans.index in blockC.transPool):
-                    blockC.transPool.pop(trans.index)
+            print ("Not implimented")
+        # not implimented
                 
     else:
         try:
@@ -231,12 +243,15 @@ def landDetails():
     else:
         return blockC.landDetails
         
-@app.route('/requestKarna',methods=['POST'])
+@app.route('/transactionRequest',methods=['POST'])
 def requestSender():
     if( not blockC.islogin()):
         return redirect(url_for("login"))
     else:
-        print(request.form)
+
+        trans = transaction.Transaction(request.form['price'], request.form['landID'], blockC.landDetails[request.form['landID']], blockC.ownerDetails.userID,'','','documents url')
+        if(trans.signBuyer()):
+            cfg.sendBuyRequest(trans)
         return redirect(url_for("login"))
 
 if __name__ == '__main__':

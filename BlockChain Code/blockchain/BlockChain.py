@@ -14,24 +14,28 @@ class BlockChain:
         self.nodesIP = []
         self.landDetails = {}
         self.transactionIndex = {} # store all transactions on the blockChain
-        self.transPool={}    # approved checked block waiting to be mined
+        self.transPool = {}    # approved checked block waiting to be mined
 
     def addIP(self, id, address):
         print ((id,address))
         if(not ({'id':id,'address':address} in self.nodesIP)):
-            
             self.nodesIP.append({'id':id,'address':address})
 
     def islogin(self):
-        return self.ownerDetails.login
+        return self.ownerDetails.login  
 
     def insertTransaction(self, obj):
         self.transPool[obj.index] = obj
         
     def distribute(self, obj, path):
         for peer in self.nodesIP:
-            res = requests.post('http://'+ peer['address']+ path, json=obj)
-            print("Sending trans.. "+peer['address']+":"+str(res))
+            try:
+                # res = requests.post('http://'+ peer['address']+ path, json=obj)
+                print("Sending trans.. "+peer['address']+":"+str(res))
+            except Exception as e:
+                print (e)
+            
+            
     
     # def upadatePeers(self, peers):
     #     self.nodesIP = peers

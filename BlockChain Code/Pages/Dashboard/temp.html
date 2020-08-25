@@ -1,7 +1,7 @@
 <div>
     <h2>Interested in Buying? <i>Request Seller For More details.</i></h2>
     <h3>Fill the following Details to Request</h3>
-    <form method='POST' action='/requestKarna' onsubmit='console.log(this);'>
+    <form method='POST' action='/transactionRequest' onsubmit='console.log(this);'>
         <input type='hidden' name='landID' value='"+ ele['land'].land_id +"'></br>
         <input type='Float' name='price' placeholder="Enter Price"></br>
         <!-- <input type="text" name ="message" placeholder="Enter your message here." width="20" height="50"> -->
@@ -14,7 +14,7 @@
 <div>\
     <h2>Interested in Buying? <i>Request Seller For More details.</i></h2>\
     <h3>Fill the following Details to Request</h3>\
-    <form method='POST' action='/requestKarna' onsubmit='console.log(this);'>\
+    <form method='POST' action='/transactionRequest' onsubmit='console.log(this);'>\
         <input type='hidden' name='landID'></br>\
         <input type='Float' name='price' placeholder=\"Enter Price\"></br>\
         <textarea name=\"message\"></textarea>\
