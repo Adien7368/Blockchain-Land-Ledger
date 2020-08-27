@@ -108,9 +108,6 @@
                           Land ID
                         </th>
                         <th>
-                          Inspector
-                        </th>
-                        <th>
                           Status
                         </th>
                         <th>
@@ -121,41 +118,23 @@
                         </th>
                       </thead>
                       <tbody>
-                        <!-- The should be a loop the construct table-->
+
+                      {% for land in landInfo %}
                          <tr>
                           <td>
-                            1
+                            {{land}}
                           </td>
                           <td>
-                            dummy
-                          </td>
-                          <td>
-                            dummy
-                          </td>
-                          <td>
-                            dummy
-                          </td>
-                          <td class="text-primary">
-                            <a href="">View</a>
-                          </td>
-                        </tr> 
-                        <tr>
-                          <td>
-                            1
-                          </td>
-                          <td>
-                            dummy
-                          </td>
-                          <td>
-                            dummy
+                            MyLand
                           </td>
                           <td>
                             dummy
                           </td>
                           <td class="text-primary">
-                            <a href="">View</a>
+                            <a href="/blockchain/logs">View</a>
                           </td>
                         </tr> 
+                      {% endfor %}
                       </tbody>
                     </table>
                   </div>

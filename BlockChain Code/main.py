@@ -119,8 +119,15 @@ def requ():
 
 @app.route('/tables', methods = ['GET'])
 def tab():
-    return render_template(cfg.PAGES['table'])
-
+    if(blockC.islogin()):
+        cfg.printErr(blockC.landDetails)
+        arr = []
+        for ele in blockC.landDetails:
+            if  int(blockC.ownerDetails.userID) - int(blockC.landDetails[ele]) == 0:
+                arr.append(ele)
+        return render_template(cfg.PAGES['table'], myId = blockC.ownerDetails.userID, landInfo = arr)
+    else:
+        return redirect(url_for("login"))
 @app.route('/user', methods = ['GET'])
 def userprofile():
     if(blockC.islogin()):
