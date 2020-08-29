@@ -3,10 +3,10 @@
 
 class Database {
     // DB params
-    private $host ='localhost:3306';
+    private $host ='hat';
     private $db_name='ledger';
-    private $username = 'sammy';
-    private $password='1@9!9458';
+    private $username = 'hat';
+    private $password='hat';
     private $conn;
 
     //DB connect
