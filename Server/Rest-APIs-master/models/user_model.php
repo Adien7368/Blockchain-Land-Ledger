@@ -46,16 +46,16 @@
 
         public function create() {
             $query='INSERT INTO '.$this->table.' SET id=:id, user_name=:user_name, name=:name, email=:email, wallet_id=:wallet_id, phone=:phone, address=:address, dob=:dob, dig_sign=:dig_sign';
-	    $stmt=$this->conn->prepare($query);
+	        $stmt=$this->conn->prepare($query);
             $stmt->bindParam(':id', $this->id);
             $stmt->bindParam(':name', $this->name);
             $stmt->bindParam(':user_name', $this->user_name);
             $stmt->bindParam(':email', $this->email);
-	    $stmt->bindParam(':wallet_id',$this->wallet_id);
-	    $stmt->bindParam(':phone',$this->phone);
-	    $stmt->bindParam(':address',$this->address);
-	    $stmt->bindParam(':dob',$this->dob);
-	    $stmt->bindParam(':dig_sign',$this->dig_sign);
+	        $stmt->bindParam(':wallet_id',$this->wallet_id);
+	        $stmt->bindParam(':phone',$this->phone);
+	        $stmt->bindParam(':address',$this->address);
+	        $stmt->bindParam(':dob',$this->dob);
+	        $stmt->bindParam(':dig_sign',$this->dig_sign);
             try{ 
                 $stmt->execute();
                 return true;
